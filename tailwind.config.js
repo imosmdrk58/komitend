@@ -21,6 +21,8 @@ module.exports = {
     },
     extend: {
       colors: {
+        cprimary: "var(--cprimary)",
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
