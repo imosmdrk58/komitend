@@ -62,7 +62,7 @@ const Header = () => {
                 icon={faReact}
                 className="text-[#3453d1] size-6"
               />
-              <h1 className="text-2xl text-[#444444] dark:text-[#eeeeee] font-semibold hover:text-[#3453d1] transition-colors duration-500">
+              <h1 className="text-2xl text-[#444444] dark:text-[#eeeeee] font-extrabold hover:text-[#3453d1] transition-colors duration-500">
                 KomikGan
               </h1>
             </a>
