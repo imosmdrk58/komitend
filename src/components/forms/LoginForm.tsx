@@ -12,30 +12,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-
-const registerUser = async ({
-  email,
-  password,
-}: {
-  email: string;
-  password: string;
-}) => {
-  const response = await fetch("http://localhost:3001/authentications", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  });
-
-  if (!response.ok) {
-    const { message } = await response.json();
-    throw new Error(message);
-  }
-
-  const { data } = await response.json();
-  return data;
-};
+import { useAuth } from "@/providers/AuthProvider";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -43,12 +20,13 @@ const formSchema = z.object({
 });
 
 const LoginForm = () => {
+  const { login } = useAuth()
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationKey: ["login"],
-    mutationFn: registerUser,
+    mutationFn: login,
     onSuccess: () => {
       toast.success("Login successfully. Welcome!");
       navigate("/");
