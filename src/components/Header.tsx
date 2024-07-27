@@ -13,7 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const routes = [
   {
@@ -57,7 +57,7 @@ const Header = () => {
             <FontAwesomeIcon icon={faBarsStaggered} className="text-[25px]" />
           </button>
           <div className="w-full px-3 text-left flex items-center lg:pl-0 bg-[#ffffff] dark:bg-[#3b3c4c]">
-            <a href="/" className="flex gap-2 items-center justify-center">
+            <Link to="/" className="flex gap-2 items-center justify-center">
               <FontAwesomeIcon
                 icon={faReact}
                 className="text-[#3453d1] size-6"
@@ -65,7 +65,7 @@ const Header = () => {
               <h1 className="text-2xl text-[#444444] dark:text-[#eeeeee] font-extrabold hover:text-[#3453d1] transition-colors duration-500">
                 KomikGan
               </h1>
-            </a>
+            </Link>
             <ul className="hidden md:flex gap-2 ml-5">
               {routes.map((route) => (
                 <li key={route.label}>
@@ -97,7 +97,6 @@ const Header = () => {
               <input
                 type="text"
                 name="search"
-                id="search"
                 className="py-2 px-4 rounded-sm outline-none text-sm font-semibold focus:ring-1 ring-[#777777] bg-[#f1f1f1] text-[#444444] placeholder:text-[#777777] dark:bg-[#2f303e] dark:text-[#aaaaaa] dark:placeholder:text-[#aaaaaa] dark:ring-[#45475a]"
                 placeholder="Search..."
                 autoComplete="off"
@@ -145,8 +144,8 @@ const Header = () => {
                     {!user && (
                       <>
                         <li className="m-[7px]">
-                          <a
-                            href="/login"
+                          <Link
+                            to="/login"
                             className="text-left w-28 flex items-center px-[10px] py-[7px] rounded-md text-[13px] font-semibold tracking-wide hover:bg-[#f1f1f1] dark:hover:bg-[#45475a]"
                           >
                             <FontAwesomeIcon
@@ -154,11 +153,11 @@ const Header = () => {
                               className="mr-3"
                             />
                             Login
-                          </a>
+                          </Link>
                         </li>
                         <li className="m-[7px]">
-                          <a
-                            href="/register"
+                          <Link
+                            to="/register"
                             className="text-left w-28 flex items-center px-[10px] py-[7px] rounded-md text-[13px] font-semibold tracking-wide hover:bg-[#f1f1f1] dark:hover:bg-[#45475a]"
                           >
                             <FontAwesomeIcon
@@ -166,7 +165,7 @@ const Header = () => {
                               className="mr-2"
                             />
                             Register
-                          </a>
+                          </Link>
                         </li>
                       </>
                     )}
@@ -176,8 +175,8 @@ const Header = () => {
                         {/* {session?.user?.role !== "USER" && ( */}
                         {true && (
                           <li className="m-[7px]">
-                            <a
-                              href="/admin"
+                            <Link
+                              to="/admin"
                               className="text-left w-28 flex items-center px-[10px] py-[7px] rounded-md text-[13px] font-semibold tracking-wide hover:bg-[#f1f1f1] dark:hover:bg-[#45475a]"
                             >
                               <FontAwesomeIcon
@@ -185,17 +184,17 @@ const Header = () => {
                                 className="mr-3"
                               />
                               Panel
-                            </a>
+                            </Link>
                           </li>
                         )}
                         <li className="m-[7px]">
-                          <a
-                            href="/profile"
+                          <Link
+                            to="/profile"
                             className="text-left w-28 flex items-center px-[10px] py-[7px] rounded-md text-[13px] font-semibold tracking-wide hover:bg-[#f1f1f1] dark:hover:bg-[#45475a]"
                           >
                             <FontAwesomeIcon icon={faUser} className="mr-3" />
                             Profile
-                          </a>
+                          </Link>
                         </li>
                         <li className="m-[7px]">
                           <button
@@ -248,7 +247,6 @@ const Header = () => {
         <input
           type="text"
           name="search"
-          id="search"
           className="py-2 px-4 rounded-sm outline-none text-sm w-full font-semibold focus:ring-1 ring-[#777777] bg-[#f1f1f1] text-[#444444] placeholder:text-[#777777] dark:bg-[#2f303e] dark:text-[#aaaaaa] dark:placeholder:text-[#aaaaaa] dark:ring-[#45475a]"
           placeholder="Search..."
           autoComplete="off"

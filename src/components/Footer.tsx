@@ -25,8 +25,8 @@ const Footer = () => {
             </h1>
           </Link>
           <div className="flex gap-2">
-            {routes.map((route) => (
-                <Link to={route.url} className="text-[#f1f1f1] bg-[#444444] dark:bg-[#9ca9b9] dark:text-[#3b3c4c] rounded-full w-9 h-9 flex items-center justify-center">
+            {routes.map((route, index) => (
+                <Link key={index} to={route.url} className="text-[#f1f1f1] bg-[#444444] dark:bg-[#9ca9b9] dark:text-[#3b3c4c] rounded-full w-9 h-9 flex items-center justify-center">
                     <FontAwesomeIcon icon={route.icon} />
                 </Link>
             ))}

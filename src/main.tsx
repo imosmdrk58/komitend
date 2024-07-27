@@ -12,7 +12,8 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import RootLayout from "@/routes/RootLayout";
 import Home from "@/routes/Home";
 import Register from "@/routes/auth/Register";
-import { Toaster } from "./components/ui/sonner";
+import { Toaster } from "@/components/ui/sonner";
+import Login from "@/routes/auth/Login";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />
+      },
+      {
+        path: "/login",
+        element: <Login />
       }
     ],
   },
