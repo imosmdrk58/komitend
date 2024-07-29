@@ -1,6 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
-import { jwtDecode } from "jwt-decode";
+import { createContext, useContext, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 type User = {
   id: number;
@@ -17,26 +16,56 @@ const AuthContext = createContext<{
     password: string;
   }) => Promise<void>;
   logout: () => Promise<void>;
+  pending: boolean
 }>({
   user: null,
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
+  pending: true
 });
 
+async function getUserProfile() {
+  const res = await fetch("http://localhost:3001/users/me", {
+    method: "GET",
+    credentials: "include"
+  })
+
+  if (!res.ok) {
+    const { message } = await res.json();
+    throw new Error(message);
+  }
+
+  const { data } = await res.json();
+  return data
+}
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [cookies] = useCookies(["accessToken", "refreshToken"]);
+  const queryClient = useQueryClient()
+
+  const { data, isPending } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getUserProfile,
+    retry: false,
+    staleTime: Infinity
+  })
 
   useEffect(() => {
-    if (cookies.accessToken) {
-      const decoded = jwtDecode(cookies.accessToken) as User
-      setUser(decoded)
+    const refreshAccessToken = async () => {
+      if (data) {
+        const response = await fetch("http://localhost:3001/authentications", {
+          method: "PUT",
+          credentials: "include"
+        })
+  
+        if (!response.ok) {
+          await logout()
+        }
+      }
     }
 
-    if ((!cookies.accessToken || cookies.accessToken === "") || (!cookies.refreshToken || cookies.refreshToken === "")) {
-        return;
-      }
-  }, [setUser, cookies])
+    const interval = setInterval(refreshAccessToken, 5 * 60 * 1000)
+    return () => clearInterval(interval)
+  })
 
   const login = async ({ email, password }: { email: string, password: string }) => {
     const response = await fetch("http://localhost:3001/authentications", {
@@ -53,37 +82,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       throw new Error(message);
     }
 
-    const { data } = await response.json();
-
-    const decoded = jwtDecode(data.accessToken) as User
-    setUser(decoded)
-
-    return;
+    queryClient.invalidateQueries({ queryKey: ["profile"] })
   };
 
   const logout = async () => {
-    const response = await fetch("http://localhost:3001/authentications", {
+    await fetch("http://localhost:3001/authentications", {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        refreshToken: cookies.refreshToken
-      }),
       credentials: "include"
     })
 
-    if (!response.ok) {
-      const { message } = await response.json();
-      throw new Error(message);
-    }
-
-    setUser(null)
-    return;
+    queryClient.invalidateQueries({ queryKey: ["profile"] })
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user: data, login, logout, pending: isPending }}>
       {children}
     </AuthContext.Provider>
   );

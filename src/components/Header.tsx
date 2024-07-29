@@ -1,3 +1,4 @@
+import { useAuth } from "@/providers/AuthProvider";
 import { useTheme } from "@/providers/ThemeProvider";
 import { faReact } from "@fortawesome/free-brands-svg-icons";
 import {
@@ -12,8 +13,10 @@ import {
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Skeleton } from "./ui/skeleton";
 
 const routes = [
   {
@@ -32,11 +35,20 @@ const routes = [
 
 const Header = () => {
   const { theme, setTheme } = useTheme()
-  const [user, setUser] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  const { user, pending, logout } = useAuth();
   const navigate = useNavigate();
+
+  const logoutMutation = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: logout,
+    onSuccess: () => {
+      navigate(0);
+    },
+  });
 
   const handleSearch = (str: string) => {
     if (str.length < 1) return;
@@ -110,7 +122,7 @@ const Header = () => {
               />
             </div>
             <div className="h-full px-[12px] cursor-pointer flex items-center relative lg:pr-0 bg-[#ffffff] dark:bg-[#3b3c4c] text-[#444444] dark:text-[#eeeeee]">
-              {status !== "loading" ? (
+              {!pending ? (
                 <>
                   <div
                     className="w-[40px] h-[40px] relative"
@@ -173,7 +185,7 @@ const Header = () => {
                     {user && (
                       <>
                         {/* {session?.user?.role !== "USER" && ( */}
-                        {true && (
+                        {user?.role !== "user" && (
                           <li className="m-[7px]">
                             <Link
                               to="/admin"
@@ -198,7 +210,7 @@ const Header = () => {
                         </li>
                         <li className="m-[7px]">
                           <button
-                            onClick={() => {}}
+                            onClick={() => logoutMutation.mutate()}
                             className="text-left w-28 flex items-center px-[10px] py-[7px] rounded-md text-[13px] font-semibold tracking-wide hover:bg-[#f1f1f1] dark:hover:bg-[#45475a]"
                           >
                             <FontAwesomeIcon
@@ -212,8 +224,7 @@ const Header = () => {
                     )}
                   </ul>
                 </>
-              ) : // <Skeleton className="rounded-full h-[40px] w-[40px] cursor-not-allowed" />
-              null}
+              ) : <Skeleton className="rounded-full h-[40px] w-[40px] cursor-not-allowed" /> }
             </div>
           </div>
         </div>

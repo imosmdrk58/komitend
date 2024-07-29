@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { CookiesProvider } from "react-cookie";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "@/providers/ThemeProvider";
@@ -35,7 +34,6 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <CookiesProvider defaultSetOptions={{ path: "/", httpOnly: true }}>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
@@ -44,6 +42,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           </ThemeProvider>
         </AuthProvider>
       </QueryClientProvider>
-    </CookiesProvider>
   </React.StrictMode>
 );

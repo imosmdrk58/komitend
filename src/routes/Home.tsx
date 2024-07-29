@@ -5,7 +5,7 @@ const Home = () => {
 
   return (
     <div className='font-titillium text-primary h-96'>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
+      <pre>{user ? JSON.stringify(user, null, 2) : "Unauthorized"}</pre>
     </div>
   )
 }

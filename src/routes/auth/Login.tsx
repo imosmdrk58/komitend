@@ -1,7 +1,20 @@
 import LoginForm from '@/components/forms/LoginForm'
-import { Link } from 'react-router-dom'
+import { useAuth } from '@/providers/AuthProvider'
+import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Login = () => {
+  const  { user, pending } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (user) {
+      navigate('/')
+    }
+  })
+
+  if (pending || user) return null
+
   return (
     <div className="flex items-center justify-center my-24">
       <div className="bg-white text-[#444444] dark:bg-[#3b3c4c] dark:text-[#9ca9b9] p-8 border-l-[15px] border-[#6e6dfb] w-full max-w-2xl mx-10 flex flex-col gap-8 rounded-sm shadow">
