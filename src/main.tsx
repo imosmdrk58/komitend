@@ -14,6 +14,8 @@ import Login from "@/routes/auth/Login";
 import { AuthProvider } from "./providers/AuthProvider";
 import Profile from "./routes/Profile";
 import NotFound from "./components/NotFound";
+import AdminLayout from "./routes/admin/AdminLayout";
+import Dashboard from "./routes/admin/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +43,13 @@ const router = createBrowserRouter([
       }
     ],
   },
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      { index: true, element: <Dashboard />}
+    ]
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
