@@ -13,12 +13,14 @@ import { Toaster } from "@/components/ui/sonner";
 import Login from "@/routes/auth/Login";
 import { AuthProvider } from "./providers/AuthProvider";
 import Profile from "./routes/Profile";
+import NotFound from "./components/NotFound";
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
     element: <RootLayout />,
+    // errorElement: <NotFound />,
     children: [
       { index: true, element: <Home /> },
       {
@@ -33,6 +35,10 @@ const router = createBrowserRouter([
         path: "/profile",
         element: <Profile />,
       },
+      {
+        path: "*",
+        element: <NotFound />,
+      }
     ],
   },
 ]);
