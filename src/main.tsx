@@ -12,6 +12,7 @@ import Register from "@/routes/auth/Register";
 import { Toaster } from "@/components/ui/sonner";
 import Login from "@/routes/auth/Login";
 import { AuthProvider } from "./providers/AuthProvider";
+import Profile from "./routes/Profile";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
       },
     ],
   },

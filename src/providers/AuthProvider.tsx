@@ -3,6 +3,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 type User = {
   id: number;
+  username: string;
+  email: string;
+  image: string | null;
   role: string;
 };
 

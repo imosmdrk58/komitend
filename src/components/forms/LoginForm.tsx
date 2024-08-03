@@ -13,14 +13,29 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/providers/AuthProvider";
+import Input from "../custom/input";
+import Button from "../custom/button";
 
 const formSchema = z.object({
   email: z.string().email(),
   password: z.string().min(4).max(20),
 });
 
+const inputs = [
+  {
+    type: "email",
+    name: "email",
+    placeholder: "Email",
+  },
+  {
+    type: "password",
+    name: "password",
+    placeholder: "Password",
+  },
+];
+
 const LoginForm = () => {
-  const { login } = useAuth()
+  const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -43,7 +58,7 @@ const LoginForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      password: ""
+      password: "",
     },
   });
 
@@ -58,51 +73,30 @@ const LoginForm = () => {
         className="flex gap-4 flex-col"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <>
-              <FormControl>
-                <input
-                  {...field}
-                  id="email"
-                  type="email"
-                  className="px-3 py-2 bg-[#f1f1f1] dark:bg-[#2f303e] text-[#000000] dark:text-[#aaaaaa] rounded-sm focus:outline-none focus:ring-1 focus:ring-gray-600 placeholder:text-[#7b7b7b]"
-                  placeholder="Email..."
-                  autoComplete="off"
-                />
-              </FormControl>
-              <FormMessage className="text-[#444444] dark:text-[#9ca9b9]" />
-            </>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <>
-              <FormControl>
-                <input
-                  {...field}
-                  id="password"
-                  type="password"
-                  className="px-3 py-2 bg-[#f1f1f1] dark:bg-[#2f303e] text-[#000000] dark:text-[#aaaaaa] rounded-sm focus:outline-none focus:ring-1 focus:ring-gray-600 placeholder:text-[#7b7b7b]"
-                  placeholder="Password..."
-                  autoComplete="off"
-                />
-              </FormControl>
-              <FormMessage className="text-[#444444] dark:text-[#9ca9b9]" />
-            </>
-          )}
-        />
-        <button
-          className="px-5 py-2 bg-[#6e6dfb] text-white rounded-sm font-semibold disabled:cursor-not-allowed disabled:brightness-75"
-          type="submit"
-          disabled={loading}
-        >
+        {inputs.map((input, index) => (
+          <FormField
+            control={form.control}
+            name={input.name as keyof z.infer<typeof formSchema>}
+            key={index}
+            render={({ field }) => (
+              <>
+                <FormControl>
+                  <Input
+                    {...field}
+                    id={input.name}
+                    type={input.type}
+                    placeholder={input.placeholder}
+                    autoComplete="off"
+                  />
+                </FormControl>
+                <FormMessage className="text-[#444444] dark:text-[#9ca9b9]" />
+              </>
+            )}
+          />
+        ))}
+        <Button type="submit" disabled={loading}>
           LOGIN
-        </button>
+        </Button>
       </form>
     </Form>
   );
