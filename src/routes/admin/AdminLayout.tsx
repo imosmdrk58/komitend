@@ -1,3 +1,4 @@
+import Header from "@/components/admin/Header";
 import Sidebar from "@/components/admin/Sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/providers/AuthProvider";
@@ -18,7 +19,7 @@ const AdminLayout = () => {
       <div className="min-h-screen antialiased scroll-smooth font-titillium flex flex-col w-full">
         <Sidebar />
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-          Header
+          <Header />
           <Outlet />
         </div>
       </div>
