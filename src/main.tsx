@@ -16,6 +16,7 @@ import Profile from "./routes/Profile";
 import NotFound from "./components/NotFound";
 import AdminLayout from "./routes/admin/AdminLayout";
 import Dashboard from "./routes/admin/Dashboard";
+import Users from "./routes/admin/Users";
 
 const queryClient = new QueryClient();
 
@@ -47,7 +48,11 @@ const router = createBrowserRouter([
     path: "/admin",
     element: <AdminLayout />,
     children: [
-      { index: true, element: <Dashboard />}
+      { index: true, element: <Dashboard />},
+      {
+        path: "/admin/users",
+        element: <Users />
+      }
     ]
   }
 ]);
