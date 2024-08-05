@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
@@ -23,6 +23,7 @@ import {
 import { useAuth } from "@/providers/AuthProvider";
 import { faReact } from "@fortawesome/free-brands-svg-icons";
 import { useTheme } from "@/providers/ThemeProvider";
+import { useMutation } from "@tanstack/react-query";
 
 const routes = [
   {
@@ -53,8 +54,17 @@ const routes = [
 ];
 
 const Header = () => {
-  const { user } = useAuth();
-  const { theme, setTheme } = useTheme()
+  const { user, logout } = useAuth();
+  const { theme, setTheme } = useTheme();
+  const navigate = useNavigate()
+
+  const logoutMutation = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: logout,
+    onSuccess: () => {
+      navigate(0);
+    },
+  });
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -159,7 +169,7 @@ const Header = () => {
                 {theme === "light" ? "Dark Mode" : "Light Mode"}
             </DropdownMenuItem>
             <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => logoutMutation.mutate()}>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
