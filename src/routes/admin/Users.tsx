@@ -1,32 +1,16 @@
-import UserForm from "@/components/admin/forms/UserForm";
-import UsersTable from "@/components/admin/table/UsersTable";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 
-async function getUsers({ role, page }: {
-    role?: string,
-    page?: number
-}) {
-    const res = await fetch(`http://localhost:3001/users?page=${page || ""}${role ? `&role=${role}` : ""}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        credentials: "include"
-    })
+import { getUsers } from "@/services/userService";
 
-    if (!res.ok) {
-        throw new Error("Failed to fetch users")
-    }
+import { Button } from "@/components/ui/button";
+import UserForm from "@/components/admin/forms/UserForm";
+import UsersTable from "@/components/admin/table/UsersTable";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-    const { data } = await res.json();
-    return data
-}
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 const Users = () => {
   const [searchParams, setSearchParams] = useSearchParams();

@@ -1,14 +1,16 @@
+import { toast } from "sonner";
+import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { formatDate } from "@/lib/utils";
+import { useAuth } from "@/providers/AuthProvider";
+import { deleteUser } from "@/services/userService";
+
 import Card from "../Card";
-
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
+import UserForm from "../forms/UserForm";
+import LoadingTable from "./LoadingTable";
+import ConfirmDialog from "../ui/ConfirmDialog";
+import TablePagination from "./TablePagination";
 import {
   Table,
   TableBody,
@@ -17,35 +19,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatDate } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import LoadingTable from "./LoadingTable";
-import TablePagination from "./TablePagination";
-import UserForm from "../forms/UserForm";
-import { useState } from "react";
-import { useAuth } from "@/providers/AuthProvider";
-import ConfirmDialog from "../ui/ConfirmDialog";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-
-async function deleteUser(username: string) {
-  const res = await fetch(`http://localhost:3001/users/${username}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
-
-  if (!res.ok) {
-    const { message } = await res.json();
-    throw new Error(message);
-  }
-
-  const { data } = await res.json();
-  return data;
-}
 
 const UsersTable = ({ data, loading }: { data: any; loading: boolean }) => {
   const { user } = useAuth()

@@ -1,3 +1,13 @@
+import { z } from "zod";
+import { toast } from "sonner";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { useAuth } from "@/providers/AuthProvider";
+import { createUser, updateUser } from "@/services/userService";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,14 +25,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAuth } from "@/providers/AuthProvider";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type Props = {
   open: boolean;
@@ -43,50 +52,9 @@ const formSchema = z.object({
   role: z.string(),
 });
 
-async function createUser(data: z.infer<typeof formSchema>) {
-  const res = await fetch("http://localhost:3001/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-    credentials: "include"
-  });
-
-  if (!res.ok) {
-    const { message } = await res.json();
-    throw new Error(message);
-  }
-
-  const { data: user } = await res.json();
-  return user;
-}
-
-async function updateUser({ username, data}: {
-  username: string;
-  data: z.infer<typeof formSchema>;
-}) {
-  const res = await fetch(`http://localhost:3001/users/${username}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-    credentials: "include"
-  });
-
-  if (!res.ok) {
-    const { message } = await res.json();
-    throw new Error(message);
-  }
-
-  const { data: user } = await res.json();
-  return user;
-}
-
 const UserForm: React.FC<Props> = ({ open, onClose, data }) => {
-  const { user } = useAuth()
-    const queryClient = useQueryClient();
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
 
   const createUserMutation = useMutation({
     mutationKey: ["create-user"],
@@ -96,7 +64,7 @@ const UserForm: React.FC<Props> = ({ open, onClose, data }) => {
   const updateUserMutation = useMutation({
     mutationKey: ["update-user"],
     mutationFn: updateUser,
-  })
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -115,41 +83,55 @@ const UserForm: React.FC<Props> = ({ open, onClose, data }) => {
   }, [data, form]);
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (!data && !values.password) {
-      toast.error("Password is required");
-      return;
-    }
-
     if (!data) {
-      createUserMutation.mutate(values, {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["users"] });
-          toast.success("User created successfully.");
-          form.reset();
-          onClose();
+      if (!values.password) {
+        toast.error("Password is required");
+        return;
+      }
+
+      createUserMutation.mutate(
+        {
+          username: values.username,
+          email: values.email,
+          password: values.password,
+          role: values.role,
         },
-        onError: (error) => {
-          toast.error(error.message);
-        },
-      });
-    } else {
-      updateUserMutation.mutate({
-        username: data.username,
-        data: {
-          ...values,
-          password: (!values.password || values?.password === "") ? undefined : values.password
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["users"] });
+            toast.success("User created successfully.");
+            form.reset();
+            onClose();
+          },
+          onError: (error) => {
+            toast.error(error.message);
+          },
         }
-      }, {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["users"] });
-          toast.success("User updated successfully.");
-          form.reset();
-          onClose();
+      );
+    } else {
+      updateUserMutation.mutate(
+        {
+          username: data.username,
+          data: {
+            ...values,
+            password:
+              !values.password || values?.password === ""
+                ? undefined
+                : values.password,
+          },
         },
-        onError: (error) => {
-          toast.error(error.message);
-        },
-      });
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["users"] });
+            toast.success("User updated successfully.");
+            form.reset();
+            onClose();
+          },
+          onError: (error) => {
+            toast.error(error.message);
+          },
+        }
+      );
     }
   };
 
@@ -171,7 +153,7 @@ const UserForm: React.FC<Props> = ({ open, onClose, data }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="Username" {...field}/>
+                      <Input placeholder="Username" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -194,7 +176,11 @@ const UserForm: React.FC<Props> = ({ open, onClose, data }) => {
                 name="role"
                 render={({ field }) => (
                   <FormItem>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={user?.role !== "superadmin"}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={user?.role !== "superadmin"}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Role" />
@@ -202,9 +188,7 @@ const UserForm: React.FC<Props> = ({ open, onClose, data }) => {
                       </FormControl>
                       <SelectContent>
                         {roles.map((role) => (
-                            <SelectItem value={role}>
-                                {role}
-                            </SelectItem>
+                          <SelectItem value={role}>{role}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
