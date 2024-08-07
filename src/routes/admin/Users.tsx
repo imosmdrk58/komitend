@@ -20,6 +20,7 @@ const Users = () => {
     queryKey: ["users", { role: searchParams.get("role") || undefined, page: Number(searchParams.get("page")) || 1 }],
     queryFn: async () => await getUsers({ role: searchParams.get("role") || undefined, page: Number(searchParams.get("page")) || 1 }),
     retry: false,
+    staleTime: Infinity
   })
 
   return (
