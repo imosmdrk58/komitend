@@ -18,6 +18,7 @@ import AdminLayout from "./routes/admin/AdminLayout";
 import Dashboard from "./routes/admin/Dashboard";
 import Users from "./routes/admin/Users";
 import Genres from "./routes/admin/Genres";
+import Series from "./routes/admin/Series";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       { index: true, element: <Dashboard />},
+      {
+        path: "/admin/series",
+        element: <Series />
+      },
       {
         path: "/admin/users",
         element: <Users />
