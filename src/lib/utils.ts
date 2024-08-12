@@ -15,3 +15,18 @@ export function formatDate(date: Date | string | number) {
     hour12: false,
   });
 }
+export function toBase64(file: File) {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+
+    fileReader.readAsDataURL(file);
+
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+}

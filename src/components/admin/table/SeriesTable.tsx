@@ -3,11 +3,8 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { formatDate } from "@/lib/utils";
-import { useAuth } from "@/providers/AuthProvider";
-import { deleteUser } from "@/services/userService";
 
 import Card from "../Card";
-import UserForm from "../forms/UserForm";
 import LoadingTable from "./LoadingTable";
 import ConfirmDialog from "../ui/ConfirmDialog";
 import TablePagination from "./TablePagination";
@@ -31,26 +28,22 @@ import { Button } from "@/components/ui/button";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { deleteSerie } from "@/services/serieService";
 
 const SeriesTable = ({ data, loading }: { data: any; loading: boolean }) => {
-  const { user } = useAuth()
   const queryClient = useQueryClient()
   
-  const [editDialog, setEditDialog] = useState({
-    open: false,
-    data: null,
-  })
   const [deleteDialog, setDeleteDialog] = useState({
     open: false,
-    data: null,
+    id: 0,
   })
 
   const deleteMutation = useMutation({
-    mutationKey: ["delete-user"],
-    mutationFn: deleteUser,
+    mutationKey: ["delete-series"],
+    mutationFn: deleteSerie,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] })
-      toast.success("User deleted successfully.")
+      queryClient.invalidateQueries({ queryKey: ["series"] })
+      toast.success("Series deleted successfully.")
     },
     onError: (error) => {
       toast.error(error.message)
@@ -58,8 +51,8 @@ const SeriesTable = ({ data, loading }: { data: any; loading: boolean }) => {
   })
 
   const handleDelete = () => {
-    if (deleteDialog.data) {
-      deleteMutation.mutate(deleteDialog.data)
+    if (deleteDialog.id) {
+      deleteMutation.mutate(deleteDialog.id)
     }
   }
 
@@ -121,7 +114,7 @@ const SeriesTable = ({ data, loading }: { data: any; loading: boolean }) => {
                                 Edit
                             </Link>
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer" onClick={() => setDeleteDialog({ open: true, data: item.username })} disabled={item.role !== "user" && user?.role !== "superadmin"}>
+                          <DropdownMenuItem className="cursor-pointer" onClick={() => setDeleteDialog({ open: true, id: item.id })}>
                             Delete
                           </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -145,15 +138,9 @@ const SeriesTable = ({ data, loading }: { data: any; loading: boolean }) => {
         <TablePagination totalPages={data?.totalPages} />
       </Card>
 
-      <UserForm
-        open={editDialog.open}
-        onClose={() => setEditDialog({ open: false, data: null })}
-        data={editDialog.data}
-      />
-
       <ConfirmDialog
         open={deleteDialog.open}
-        onClose={() => setDeleteDialog({ open: false, data: null })}
+        onClose={() => setDeleteDialog({ open: false, id: 0 })}
         onConfirm={handleDelete}
       />
     </>

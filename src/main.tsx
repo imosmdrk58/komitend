@@ -19,6 +19,8 @@ import Dashboard from "./routes/admin/Dashboard";
 import Users from "./routes/admin/Users";
 import Genres from "./routes/admin/Genres";
 import Series from "./routes/admin/Series";
+import NewSeries from "./routes/admin/NewSeries";
+import EditSeries from "./routes/admin/EditSeries";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +56,14 @@ const router = createBrowserRouter([
       {
         path: "/admin/series",
         element: <Series />
+      },
+      {
+        path: "/admin/series/new",
+        element: <NewSeries />
+      },
+      {
+        path: "/admin/series/edit/:slug",
+        element: <EditSeries />
       },
       {
         path: "/admin/users",

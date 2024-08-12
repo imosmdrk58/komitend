@@ -13,7 +13,7 @@ const Series = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { data, isPending } = useQuery({
-    queryKey: [ "users",
+    queryKey: [ "series",
       {
         status: searchParams.get("status") || undefined,
         page: Number(searchParams.get("page")) || 1,
