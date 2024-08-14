@@ -3,6 +3,7 @@ import apiFetch from "@/lib/apiFetch";
 type GetUsersProps = {
   role?: string;
   page?: number;
+  search?: string;
 };
 
 type UpdateUserProps = {
@@ -22,10 +23,11 @@ type CreateUserProps = {
   role: string;
 };
 
-export async function getUsers({ role, page }: GetUsersProps) {
+export async function getUsers({ role, page, search }: GetUsersProps) {
   const url = new URL("/users", import.meta.env.VITE_API_URL);
   if (role) url.searchParams.append("role", role);
   if (page) url.searchParams.append("page", page.toString());
+  if (search) url.searchParams.append("search", search);
 
   return await apiFetch(url);
 }

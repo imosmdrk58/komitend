@@ -3,6 +3,7 @@ import apiFetch from "@/lib/apiFetch";
 type GetSeriesProps = {
   status?: string;
   page?: number;
+  search?: string;
 };
 
 type CreateSerieArgs = {
@@ -39,10 +40,11 @@ type UpdateSerieArgs = {
   genres?: string[];
 };
 
-export async function getSeries({ status, page = 1 }: GetSeriesProps) {
+export async function getSeries({ status, page = 1, search }: GetSeriesProps) {
   const url = new URL("/series", import.meta.env.VITE_API_URL);
   if (status) url.searchParams.append("status", status);
   if (page) url.searchParams.append("page", page.toString());
+  if (search) url.searchParams.append("search", search);
 
   return await apiFetch(url);
 }

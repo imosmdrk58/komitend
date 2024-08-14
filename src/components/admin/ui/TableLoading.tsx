@@ -1,7 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-const LoadingTable = () => {
+const TableLoading = () => {
   return (
     <>
         {[...Array(5)].map((_, i) => (
@@ -15,4 +15,4 @@ const LoadingTable = () => {
   )
 }
 
-export default LoadingTable
+export default TableLoading

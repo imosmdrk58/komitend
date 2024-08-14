@@ -3,11 +3,13 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { formatDate } from "@/lib/utils";
+import { useAuth } from "@/providers/AuthProvider";
+import { deleteUser } from "@/services/userService";
 
-import Card from "../Card";
-import LoadingTable from "./LoadingTable";
+import UserForm from "../forms/UserForm";
+import LoadingTable from "../ui/TableLoading";
 import ConfirmDialog from "../ui/ConfirmDialog";
-import TablePagination from "./TablePagination";
+import TablePagination from "../ui/TablePagination";
 import {
   Table,
   TableBody,
@@ -27,23 +29,27 @@ import { Button } from "@/components/ui/button";
 
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
-import { deleteSerie } from "@/services/serieService";
+import TableCard from "../ui/TableCard";
 
-const SeriesTable = ({ data, loading }: { data: any; loading: boolean }) => {
+const UsersTable = ({ data, loading }: { data: any; loading: boolean }) => {
+  const { user } = useAuth()
   const queryClient = useQueryClient()
   
+  const [editDialog, setEditDialog] = useState({
+    open: false,
+    data: null,
+  })
   const [deleteDialog, setDeleteDialog] = useState({
     open: false,
-    id: 0,
+    data: null,
   })
 
   const deleteMutation = useMutation({
-    mutationKey: ["delete-series"],
-    mutationFn: deleteSerie,
+    mutationKey: ["delete-user"],
+    mutationFn: deleteUser,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["series"] })
-      toast.success("Series deleted successfully.")
+      queryClient.invalidateQueries({ queryKey: ["users"] })
+      toast.success("User deleted successfully.")
     },
     onError: (error) => {
       toast.error(error.message)
@@ -51,21 +57,20 @@ const SeriesTable = ({ data, loading }: { data: any; loading: boolean }) => {
   })
 
   const handleDelete = () => {
-    if (deleteDialog.id) {
-      deleteMutation.mutate(deleteDialog.id)
+    if (deleteDialog.data) {
+      deleteMutation.mutate(deleteDialog.data)
     }
   }
 
   return (
     <>
-      <Card title="Series" description="List of all series">
+      <TableCard title="Users" description="List of all users">
         <Table className="mb-4">
           <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>
-              <TableHead>Title</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="hidden md:table-cell">Posted By</TableHead>
+              <TableHead>Username</TableHead>
+              <TableHead>Role</TableHead>
               <TableHead className="hidden md:table-cell">Created At</TableHead>
               <TableHead className="hidden md:table-cell">Updated at</TableHead>
               <TableHead>
@@ -80,12 +85,9 @@ const SeriesTable = ({ data, loading }: { data: any; loading: boolean }) => {
                   <TableRow key={item.id}>
                     <TableCell className="font-medium">{item.id}</TableCell>
                     <TableCell className="font-medium">
-                      {item.title}
+                      {item.username}
                     </TableCell>
-                    <TableCell className="font-medium">{item.status}</TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      {item.user.username}
-                    </TableCell>
+                    <TableCell className="font-medium">{item.role}</TableCell>
                     <TableCell className="hidden md:table-cell">
                       {formatDate(item.createdAt)}
                     </TableCell>
@@ -109,12 +111,10 @@ const SeriesTable = ({ data, loading }: { data: any; loading: boolean }) => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem className="cursor-pointer" asChild>
-                            <Link to={`/admin/series/edit/${item.slug}`}>
-                                Edit
-                            </Link>
+                          <DropdownMenuItem className="cursor-pointer" onClick={() => setEditDialog({ open: true, data: item })} disabled={item.role !== "user" && user?.role !== "superadmin"}>
+                            Edit
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer" onClick={() => setDeleteDialog({ open: true, id: item.id })}>
+                          <DropdownMenuItem className="cursor-pointer" onClick={() => setDeleteDialog({ open: true, data: item.username })} disabled={item.role !== "user" && user?.role !== "superadmin"}>
                             Delete
                           </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -136,15 +136,21 @@ const SeriesTable = ({ data, loading }: { data: any; loading: boolean }) => {
         </Table>
 
         <TablePagination totalPages={data?.totalPages} />
-      </Card>
+      </TableCard>
+
+      <UserForm
+        open={editDialog.open}
+        onClose={() => setEditDialog({ open: false, data: null })}
+        data={editDialog.data}
+      />
 
       <ConfirmDialog
         open={deleteDialog.open}
-        onClose={() => setDeleteDialog({ open: false, id: 0 })}
+        onClose={() => setDeleteDialog({ open: false, data: null })}
         onConfirm={handleDelete}
       />
     </>
   );
 };
 
-export default SeriesTable;
+export default UsersTable;

@@ -6,7 +6,7 @@ import { getUsers } from "@/services/userService";
 
 import { Button } from "@/components/ui/button";
 import UserForm from "@/components/admin/forms/UserForm";
-import UsersTable from "@/components/admin/table/UsersTable";
+import UsersTable from "@/components/admin/tables/UsersTable";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,8 +17,16 @@ const Users = () => {
   const [newuserDialogOpen, setNewuserDialogOpen] = useState(false)
 
   const { data, isPending } = useQuery({
-    queryKey: ["users", { role: searchParams.get("role") || undefined, page: Number(searchParams.get("page")) || 1 }],
-    queryFn: async () => await getUsers({ role: searchParams.get("role") || undefined, page: Number(searchParams.get("page")) || 1 }),
+    queryKey: ["users", {
+      role: searchParams.get("role") || undefined,
+      page: Number(searchParams.get("page")) || 1,
+      search: searchParams.get("search") || undefined
+    }],
+    queryFn: async () => await getUsers({
+      role: searchParams.get("role") || undefined,
+      page: Number(searchParams.get("page")) || 1,
+      search: searchParams.get("search") || undefined
+    }),
     retry: false,
     staleTime: Infinity
   })

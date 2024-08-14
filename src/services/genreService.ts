@@ -1,8 +1,9 @@
 import apiFetch from "@/lib/apiFetch";
 
-export async function getGenres({ page }: { page: number }) {
+export async function getGenres({ page, search }: { page: number, search?: string }) {
     const url = new URL("/genres", import.meta.env.VITE_API_URL);
     url.searchParams.append("page", page.toString());
+    if (search) url.searchParams.append("search", search);
     return await apiFetch(url);
 }
 

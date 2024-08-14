@@ -6,7 +6,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import SeriesTable from "@/components/admin/table/SeriesTable";
+import SeriesTable from "@/components/admin/tables/SeriesTable";
 import { getSeries } from "@/services/serieService";
 
 const Series = () => {
@@ -17,12 +17,14 @@ const Series = () => {
       {
         status: searchParams.get("status") || undefined,
         page: Number(searchParams.get("page")) || 1,
+        search: searchParams.get("search") || undefined
       },
     ],
     queryFn: async () =>
       await getSeries({
         status: searchParams.get("status") || undefined,
         page: Number(searchParams.get("page")) || 1,
+        search: searchParams.get("search") || undefined
       }),
     retry: false,
     staleTime: Infinity,

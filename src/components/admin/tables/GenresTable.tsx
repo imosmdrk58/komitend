@@ -3,14 +3,10 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { formatDate } from "@/lib/utils";
-import { useAuth } from "@/providers/AuthProvider";
-import { deleteUser } from "@/services/userService";
 
-import Card from "../Card";
-import UserForm from "../forms/UserForm";
-import LoadingTable from "./LoadingTable";
+import TableLoading from "../ui/TableLoading";
 import ConfirmDialog from "../ui/ConfirmDialog";
-import TablePagination from "./TablePagination";
+import TablePagination from "../ui/TablePagination";
 import {
   Table,
   TableBody,
@@ -30,9 +26,11 @@ import { Button } from "@/components/ui/button";
 
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import GenreForm from "../forms/GenreForm";
+import { deleteGenre } from "@/services/genreService";
+import TableCard from "../ui/TableCard";
 
-const UsersTable = ({ data, loading }: { data: any; loading: boolean }) => {
-  const { user } = useAuth()
+const GenresTable = ({ data, loading }: { data: any; loading: boolean }) => {
   const queryClient = useQueryClient()
   
   const [editDialog, setEditDialog] = useState({
@@ -45,11 +43,11 @@ const UsersTable = ({ data, loading }: { data: any; loading: boolean }) => {
   })
 
   const deleteMutation = useMutation({
-    mutationKey: ["delete-user"],
-    mutationFn: deleteUser,
+    mutationKey: ["delete-genre"],
+    mutationFn: deleteGenre,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] })
-      toast.success("User deleted successfully.")
+      queryClient.invalidateQueries({ queryKey: ["genres"] })
+      toast.success("Genre deleted successfully.")
     },
     onError: (error) => {
       toast.error(error.message)
@@ -64,13 +62,14 @@ const UsersTable = ({ data, loading }: { data: any; loading: boolean }) => {
 
   return (
     <>
-      <Card title="Users" description="List of all users">
+      <TableCard title="Genres" description="List of all genres">
         <Table className="mb-4">
+
           <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>
-              <TableHead>Username</TableHead>
-              <TableHead>Role</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Slug</TableHead>
               <TableHead className="hidden md:table-cell">Created At</TableHead>
               <TableHead className="hidden md:table-cell">Updated at</TableHead>
               <TableHead>
@@ -78,6 +77,7 @@ const UsersTable = ({ data, loading }: { data: any; loading: boolean }) => {
               </TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
             {!loading ? (
               data?.data && data.data.length !== 0 ? (
@@ -85,9 +85,9 @@ const UsersTable = ({ data, loading }: { data: any; loading: boolean }) => {
                   <TableRow key={item.id}>
                     <TableCell className="font-medium">{item.id}</TableCell>
                     <TableCell className="font-medium">
-                      {item.username}
+                      {item.name}
                     </TableCell>
-                    <TableCell className="font-medium">{item.role}</TableCell>
+                    <TableCell className="font-medium">{item.slug}</TableCell>
                     <TableCell className="hidden md:table-cell">
                       {formatDate(item.createdAt)}
                     </TableCell>
@@ -111,10 +111,10 @@ const UsersTable = ({ data, loading }: { data: any; loading: boolean }) => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem className="cursor-pointer" onClick={() => setEditDialog({ open: true, data: item })} disabled={item.role !== "user" && user?.role !== "superadmin"}>
+                          <DropdownMenuItem className="cursor-pointer" onClick={() => setEditDialog({ open: true, data: item })}>
                             Edit
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer" onClick={() => setDeleteDialog({ open: true, data: item.username })} disabled={item.role !== "user" && user?.role !== "superadmin"}>
+                          <DropdownMenuItem className="cursor-pointer" onClick={() => setDeleteDialog({ open: true, data: item.id })}>
                             Delete
                           </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -130,15 +130,16 @@ const UsersTable = ({ data, loading }: { data: any; loading: boolean }) => {
                 </TableRow>
               )
             ) : (
-              <LoadingTable />
+              <TableLoading />
             )}
           </TableBody>
+          
         </Table>
 
         <TablePagination totalPages={data?.totalPages} />
-      </Card>
+      </TableCard>
 
-      <UserForm
+      <GenreForm
         open={editDialog.open}
         onClose={() => setEditDialog({ open: false, data: null })}
         data={editDialog.data}
@@ -153,4 +154,4 @@ const UsersTable = ({ data, loading }: { data: any; loading: boolean }) => {
   );
 };
 
-export default UsersTable;
+export default GenresTable;

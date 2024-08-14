@@ -4,10 +4,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { formatDate } from "@/lib/utils";
 
-import Card from "../Card";
-import LoadingTable from "./LoadingTable";
+import LoadingTable from "../ui/TableLoading";
 import ConfirmDialog from "../ui/ConfirmDialog";
-import TablePagination from "./TablePagination";
+import TablePagination from "../ui/TablePagination";
 import {
   Table,
   TableBody,
@@ -27,27 +26,24 @@ import { Button } from "@/components/ui/button";
 
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import GenreForm from "../forms/GenreForm";
-import { deleteGenre } from "@/services/genreService";
+import { Link } from "react-router-dom";
+import { deleteSerie } from "@/services/serieService";
+import TableCard from "../ui/TableCard";
 
-const GenresTable = ({ data, loading }: { data: any; loading: boolean }) => {
+const SeriesTable = ({ data, loading }: { data: any; loading: boolean }) => {
   const queryClient = useQueryClient()
   
-  const [editDialog, setEditDialog] = useState({
-    open: false,
-    data: null,
-  })
   const [deleteDialog, setDeleteDialog] = useState({
     open: false,
-    data: null,
+    id: 0,
   })
 
   const deleteMutation = useMutation({
-    mutationKey: ["delete-genre"],
-    mutationFn: deleteGenre,
+    mutationKey: ["delete-series"],
+    mutationFn: deleteSerie,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["genres"] })
-      toast.success("Genre deleted successfully.")
+      queryClient.invalidateQueries({ queryKey: ["series"] })
+      toast.success("Series deleted successfully.")
     },
     onError: (error) => {
       toast.error(error.message)
@@ -55,20 +51,21 @@ const GenresTable = ({ data, loading }: { data: any; loading: boolean }) => {
   })
 
   const handleDelete = () => {
-    if (deleteDialog.data) {
-      deleteMutation.mutate(deleteDialog.data)
+    if (deleteDialog.id) {
+      deleteMutation.mutate(deleteDialog.id)
     }
   }
 
   return (
     <>
-      <Card title="Genres" description="List of all genres">
+      <TableCard title="Series" description="List of all series">
         <Table className="mb-4">
           <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Slug</TableHead>
+              <TableHead>Title</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="hidden md:table-cell">Posted By</TableHead>
               <TableHead className="hidden md:table-cell">Created At</TableHead>
               <TableHead className="hidden md:table-cell">Updated at</TableHead>
               <TableHead>
@@ -83,9 +80,12 @@ const GenresTable = ({ data, loading }: { data: any; loading: boolean }) => {
                   <TableRow key={item.id}>
                     <TableCell className="font-medium">{item.id}</TableCell>
                     <TableCell className="font-medium">
-                      {item.name}
+                      {item.title}
                     </TableCell>
-                    <TableCell className="font-medium">{item.slug}</TableCell>
+                    <TableCell className="font-medium">{item.status}</TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      {item.user.username}
+                    </TableCell>
                     <TableCell className="hidden md:table-cell">
                       {formatDate(item.createdAt)}
                     </TableCell>
@@ -109,10 +109,12 @@ const GenresTable = ({ data, loading }: { data: any; loading: boolean }) => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem className="cursor-pointer" onClick={() => setEditDialog({ open: true, data: item })}>
-                            Edit
+                          <DropdownMenuItem className="cursor-pointer" asChild>
+                            <Link to={`/admin/series/edit/${item.slug}`}>
+                                Edit
+                            </Link>
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer" onClick={() => setDeleteDialog({ open: true, data: item.id })}>
+                          <DropdownMenuItem className="cursor-pointer" onClick={() => setDeleteDialog({ open: true, id: item.id })}>
                             Delete
                           </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -134,21 +136,15 @@ const GenresTable = ({ data, loading }: { data: any; loading: boolean }) => {
         </Table>
 
         <TablePagination totalPages={data?.totalPages} />
-      </Card>
-
-      <GenreForm
-        open={editDialog.open}
-        onClose={() => setEditDialog({ open: false, data: null })}
-        data={editDialog.data}
-      />
+      </TableCard>
 
       <ConfirmDialog
         open={deleteDialog.open}
-        onClose={() => setDeleteDialog({ open: false, data: null })}
+        onClose={() => setDeleteDialog({ open: false, id: 0 })}
         onConfirm={handleDelete}
       />
     </>
   );
 };
 
-export default GenresTable;
+export default SeriesTable;

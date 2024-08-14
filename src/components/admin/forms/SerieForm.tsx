@@ -5,15 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import Card from "../Card";
-import FormInput from "../ui/FormInput";
+import FormInput from "../inputs/FormInput";
 import FormAction from "../ui/FormAction";
-import FormSelect from "../ui/FormSelect";
-import FormUpload from "../ui/FormUpload";
-import FormTextarea from "../ui/FormTextarea";
+import FormSelect from "../inputs/FormSelect";
+import FormUpload from "../inputs/FormUpload";
+import FormTextarea from "../inputs/FormTextarea";
 import { createSerie, updateSerie } from "@/services/serieService";
 import FormActionMobile from "../ui/FormActionMobile";
 import { Form, FormField } from "@/components/ui/form";
+import { Card, CardContent } from "@/components/ui/card";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "Series title is required" }).max(225),
@@ -111,7 +111,7 @@ const SerieForm = ({ data }: { data?: any }) => {
         <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
           <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
             <Card title="Series Information">
-              <div className="grid gap-4">
+              <CardContent className="grid gap-4 mt-4">
                 <FormField
                   control={form.control}
                   name="title"
@@ -135,11 +135,11 @@ const SerieForm = ({ data }: { data?: any }) => {
                     />
                   )}
                 />
-              </div>
+              </CardContent>
             </Card>
 
             <Card title="Series Details">
-              <div className="grid gap-x-6 gap-y-4 sm:grid-cols-3">
+              <CardContent className="grid gap-x-6 gap-y-4 sm:grid-cols-3 mt-4">
                 <FormField
                   control={form.control}
                   name="alternative"
@@ -206,11 +206,11 @@ const SerieForm = ({ data }: { data?: any }) => {
                     />
                   )}
                 />
-              </div>
+              </CardContent>
             </Card>
 
             <Card title="Series Genre">
-              <div className="grid gap-3">
+              <CardContent className="grid gap-3 mt-4">
                 <FormField
                   control={form.control}
                   name="genres"
@@ -223,13 +223,13 @@ const SerieForm = ({ data }: { data?: any }) => {
                     />
                   )}
                 />
-              </div>
+              </CardContent>
             </Card>
           </div>
 
           <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
             <Card title="Save As">
-              <div className="grid gap-3">
+              <CardContent className="grid gap-3 mt-4">
                 <FormField
                   control={form.control}
                   name="status"
@@ -244,11 +244,11 @@ const SerieForm = ({ data }: { data?: any }) => {
                     />
                   )}
                 />
-              </div>
+              </CardContent>
             </Card>
 
             <Card title="Series Type">
-              <div className="grid gap-6">
+              <CardContent className="grid gap-6 mt-4">
                 <FormField
                   control={form.control}
                   name="seriesStatus"
@@ -280,11 +280,11 @@ const SerieForm = ({ data }: { data?: any }) => {
                     />
                   )}
                 />
-              </div>
+              </CardContent>
             </Card>
 
             <Card title="Series Cover">
-              <div className="grid gap-2">
+              <CardContent className="grid gap-2 mt-4">
                 <FormField
                   control={form.control}
                   name="image"
@@ -292,7 +292,7 @@ const SerieForm = ({ data }: { data?: any }) => {
                     <FormUpload value={field.value} onChange={field.onChange} />
                   )}
                 />
-              </div>
+              </CardContent>
             </Card>
           </div>
         </div>
