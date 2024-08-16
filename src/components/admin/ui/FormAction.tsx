@@ -4,10 +4,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
-    title: string
+  title: string
+  disabled: boolean
 }
 
-const FormAction: React.FC<Props> = ({ title }) => {
+const FormAction: React.FC<Props> = ({ title, disabled }) => {
   const navigate = useNavigate()
 
   return (
@@ -33,7 +34,7 @@ const FormAction: React.FC<Props> = ({ title }) => {
         >
           Discard
         </Button>
-        <Button size="sm" type="submit">
+        <Button size="sm" type="submit" disabled={disabled}>
           Save Post
         </Button>
       </div>

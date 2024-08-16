@@ -21,6 +21,9 @@ import Genres from "./routes/admin/Genres";
 import Series from "./routes/admin/Series";
 import NewSeries from "./routes/admin/NewSeries";
 import EditSeries from "./routes/admin/EditSeries";
+import Chapters from "./routes/admin/Chapters";
+import NewChapter from "./routes/admin/NewChapter";
+import EditChapter from "./routes/admin/EditChapter";
 
 const queryClient = new QueryClient();
 
@@ -64,6 +67,18 @@ const router = createBrowserRouter([
       {
         path: "/admin/series/edit/:slug",
         element: <EditSeries />
+      },
+      {
+        path: "/admin/chapters",
+        element: <Chapters />
+      },
+      {
+        path: "/admin/chapters/new",
+        element: <NewChapter />
+      },
+      {
+        path: "/admin/chapters/edit/:slug",
+        element: <EditChapter />
       },
       {
         path: "/admin/users",

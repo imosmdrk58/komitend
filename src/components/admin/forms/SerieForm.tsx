@@ -95,7 +95,6 @@ const SerieForm = ({ data }: { data?: any }) => {
         imageUrl: values.image?.startsWith("data:image") ? undefined : values.image,
       }
 
-      console.log(req)
       updateSerieMutation.mutate(req)
     }
   }
@@ -106,7 +105,7 @@ const SerieForm = ({ data }: { data?: any }) => {
         className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4"
         onSubmit={form.handleSubmit(handleSubmit)}
       >
-        <FormAction title="New Series" />
+        <FormAction title="New Series" disabled={createSerieMutation.isPending || updateSerieMutation.isPending} />
 
         <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
           <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
@@ -297,7 +296,7 @@ const SerieForm = ({ data }: { data?: any }) => {
           </div>
         </div>
 
-        <FormActionMobile />
+        <FormActionMobile disabled={createSerieMutation.isPending || updateSerieMutation.isPending} />
       </form>
     </Form>
   )
