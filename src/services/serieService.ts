@@ -40,6 +40,11 @@ type UpdateSerieArgs = {
   genres?: string[];
 };
 
+export async function getAllSeries() {
+  const url = new URL("/series/all", import.meta.env.VITE_API_URL);
+  return await apiFetch(url);
+}
+
 export async function getLatestUpdate({ page = 1, limit = 9 }: { page?: number; limit?: number }) {
   const url = new URL("/series/latest", import.meta.env.VITE_API_URL);
   if (limit) url.searchParams.append("limit", limit.toString());

@@ -26,6 +26,7 @@ import NewChapter from "./routes/admin/NewChapter";
 import EditChapter from "./routes/admin/EditChapter";
 import SingleSeries from "./routes/SingleSeries";
 import SingleChapter from "./routes/SingleChapter";
+import MangaList from "./routes/MangaList";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/series/:slug",
         element: <SingleSeries />
+      },
+      {
+        path: "/series",
+        element: <MangaList />
       },
       {
         path: "/register",
