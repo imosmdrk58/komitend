@@ -1,3 +1,4 @@
+import NotFound from "@/components/NotFound";
 import { Button } from "@/components/ui/button";
 import { getSerie } from "@/services/serieService";
 import {
@@ -13,12 +14,14 @@ import { Link, useParams } from "react-router-dom";
 const SingleSeries = () => {
   const { slug } = useParams();
 
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["series", { slug }],
     queryFn: async () => await getSerie(slug!),
     retry: false,
     staleTime: Infinity,
   });
+
+  if (!isPending && !data) return <NotFound />
 
   return (
     <main className="min-h-[68vh] mb-10">

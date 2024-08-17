@@ -25,6 +25,7 @@ import Chapters from "./routes/admin/Chapters";
 import NewChapter from "./routes/admin/NewChapter";
 import EditChapter from "./routes/admin/EditChapter";
 import SingleSeries from "./routes/SingleSeries";
+import SingleChapter from "./routes/SingleChapter";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <Profile />,
+      },
+      {
+        path: "/:slug",
+        element: <SingleChapter />
       },
       {
         path: "*",
