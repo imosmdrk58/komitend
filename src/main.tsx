@@ -27,6 +27,7 @@ import EditChapter from "./routes/admin/EditChapter";
 import SingleSeries from "./routes/SingleSeries";
 import SingleChapter from "./routes/SingleChapter";
 import MangaList from "./routes/MangaList";
+import GenreList from "./routes/GenreList";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "/series",
         element: <MangaList />
+      },
+      {
+        path: "/genres",
+        element: <GenreList />
       },
       {
         path: "/register",
