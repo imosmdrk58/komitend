@@ -24,15 +24,19 @@ import EditSeries from "./routes/admin/EditSeries";
 import Chapters from "./routes/admin/Chapters";
 import NewChapter from "./routes/admin/NewChapter";
 import EditChapter from "./routes/admin/EditChapter";
+import SingleSeries from "./routes/SingleSeries";
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
     element: <RootLayout />,
-    // errorElement: <NotFound />,
     children: [
       { index: true, element: <Home /> },
+      {
+        path: "/series/:slug",
+        element: <SingleSeries />
+      },
       {
         path: "/register",
         element: <Register />,
