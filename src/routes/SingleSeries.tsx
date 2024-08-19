@@ -33,7 +33,7 @@ const SingleSeries = () => {
         />
       </div>
       <div className="relative max-w-5xl mx-auto flex gap-4 flex-col md:flex-row px-4 -mt-48 md:-mt-20">
-        <div className="flex flex-col justify-center items-center md:justify-start md:items-start gap-4 min-w-[250px]">
+        <div className="flex flex-col justify-center items-center md:justify-start md:items-start gap-4 min-w-[250px] md:w-[250px]">
           <img
             src={data?.imageUrl || ""}
             alt=""
@@ -81,6 +81,10 @@ const SingleSeries = () => {
               <li className="flex flex-col gap-2">
                 <p className="text-sm font-semibold">Artist</p>
                 <p className="text-xs">{data?.artist}</p>
+              </li>
+              <li className="flex flex-col gap-2">
+                <p className="text-sm font-semibold">Posted By</p>
+                <p className="text-xs">{data?.user?.username}</p>
               </li>
               <li className="flex flex-col gap-2">
                 <p className="text-sm font-semibold">Total Chapters</p>
