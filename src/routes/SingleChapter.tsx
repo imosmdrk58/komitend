@@ -19,14 +19,14 @@ const SingleChapter = () => {
   const [open, setOpen] = useState(false);
   const { slug } = useParams();
 
-  const { data: chapter, isPending: chapterPending } = useQuery({
+  const { data: chapter } = useQuery({
     queryKey: ["chapters", { slug: slug! }],
     queryFn: async () => await getChapter(slug!),
     retry: false,
     staleTime: Infinity,
   });
 
-  const { data: serie, isPending: seriePending } = useQuery({
+  const { data: serie } = useQuery({
     queryKey: ["series", { slug: chapter?.serie?.slug }],
     queryFn: async () => await getSerie(chapter!.serie.slug),
     retry: false,
@@ -38,7 +38,9 @@ const SingleChapter = () => {
     return <NotFound />;
   }
 
-  const currentChapter = serie?.chapters?.find((c: any) => c.id === chapter?.id);
+  const currentChapter = serie?.chapters?.find(
+    (c: any) => c.id === chapter?.id
+  );
   const next =
     serie?.chapters[serie?.chapters?.indexOf(currentChapter as number) - 1];
   const prev =
@@ -66,7 +68,7 @@ const SingleChapter = () => {
               <span>•</span>
               <span>{formatDate(chapter?.createdAt)}</span>
             </div>
-        </div>
+          </div>
         </div>
         <div className="flex pl-4 gap-2">
           <button
@@ -75,22 +77,26 @@ const SingleChapter = () => {
           >
             <FontAwesomeIcon icon={faList} />
           </button>
-          {prev && (
-            <Link
-            to={`/${prev.slug}`}
-              className="bg-[#45475a] text-[#eeeeee] hover:bg-[#6e6dfb] hover:text-white px-[10px] py-[5px] rounded-sm cursor-pointer"
-            >
-              <FontAwesomeIcon icon={faArrowLeft} />
-            </Link>
-          )}
-          {next && (
-            <Link
-              to={`/${next.slug}`}
-              className="bg-[#45475a] text-[#eeeeee] hover:bg-[#6e6dfb] hover:text-white px-[10px] py-[5px] rounded-sm cursor-pointer"
-            >
-              <FontAwesomeIcon icon={faArrowRight} />
-            </Link>
-          )}
+          <Link
+            to={prev ? `/${prev.slug}` : "#"}
+            className={cn(
+              "bg-[#45475a] text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
+              !prev && "cursor-not-allowed opacity-25 hover:none",
+              prev && "hover:bg-[#6e6dfb] hover:text-white"
+            )}
+          >
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </Link>
+          <Link
+            to={next ? `/${next.slug}` : "#"}
+            className={cn(
+              "bg-[#45475a] text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
+              !next && "cursor-not-allowed opacity-25 hover:none",
+              next && "hover:bg-[#6e6dfb] hover:text-white"
+            )}
+          >
+            <FontAwesomeIcon icon={faArrowRight} />
+          </Link>
         </div>
       </div>
 
@@ -134,22 +140,26 @@ const SingleChapter = () => {
           >
             <FontAwesomeIcon icon={faList} />
           </button>
-          {prev && (
-            <Link
-              to={prev.slug}
-              className="bg-[#45475a] text-[#eeeeee] hover:bg-[#6e6dfb] hover:text-white px-[10px] py-[5px] rounded-sm cursor-pointer"
-            >
-              <FontAwesomeIcon icon={faArrowLeft} />
-            </Link>
-          )}
-          {next && (
-            <Link
-              to={next.slug}
-              className="bg-[#45475a] text-[#eeeeee] hover:bg-[#6e6dfb] hover:text-white px-[10px] py-[5px] rounded-sm cursor-pointer"
-            >
-              <FontAwesomeIcon icon={faArrowRight} />
-            </Link>
-          )}
+          <Link
+            to={prev ? `/${prev.slug}` : "#"}
+            className={cn(
+              "bg-[#45475a] text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
+              !prev && "cursor-not-allowed opacity-25 hover:none",
+              prev && "hover:bg-[#6e6dfb] hover:text-white"
+            )}
+          >
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </Link>
+          <Link
+            to={next ? `/${next.slug}` : "#"}
+            className={cn(
+              "bg-[#45475a] text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
+              !next && "cursor-not-allowed opacity-25 hover:none",
+              next && "hover:bg-[#6e6dfb] hover:text-white"
+            )}
+          >
+            <FontAwesomeIcon icon={faArrowRight} />
+          </Link>
         </div>
       </div>
 

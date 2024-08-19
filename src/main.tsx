@@ -28,6 +28,8 @@ import SingleSeries from "./routes/SingleSeries";
 import SingleChapter from "./routes/SingleChapter";
 import MangaList from "./routes/MangaList";
 import GenreList from "./routes/GenreList";
+import SeriesByGenre from "./routes/SeriesByGenre";
+import SearchSeries from "./routes/SearchSeries";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +38,10 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <Home /> },
+      {
+        path: "/search/:query",
+        element: <SearchSeries />
+      },
       {
         path: "/series/:slug",
         element: <SingleSeries />
@@ -47,6 +53,10 @@ const router = createBrowserRouter([
       {
         path: "/genres",
         element: <GenreList />
+      },
+      {
+        path: "/genres/:slug",
+        element: <SeriesByGenre />
       },
       {
         path: "/register",

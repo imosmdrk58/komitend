@@ -53,6 +53,14 @@ export async function getLatestUpdate({ page = 1, limit = 9 }: { page?: number; 
   return await apiFetch(url);
 }
 
+export async function getSeriesByGenre({ limit, page, slug }: { limit: number, page: number, slug: string }) {
+  const url = new URL(`/genres/${slug}/series`, import.meta.env.VITE_API_URL);
+  if (limit) url.searchParams.append("limit", limit.toString());
+  if (page) url.searchParams.append("page", page.toString());
+
+  return await apiFetch(url);
+}
+
 export async function getSeries({ status, page = 1, search }: GetSeriesProps) {
   const url = new URL("/series", import.meta.env.VITE_API_URL);
   if (status) url.searchParams.append("status", status);

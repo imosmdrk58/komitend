@@ -43,11 +43,11 @@ const MangaList = () => {
                   key={letter}
                   id={letter}
                 >
-                  <h2 className="text-xl py-3 px-4 bg-[#45475a] text-white rounded-md h-fit">
+                  <div className="text-xl flex justify-center items-center bg-[#45475a] text-white rounded-md w-12 h-12">
                     {letter}
-                  </h2>
+                  </div>
                   <ul className="list-[square]">
-                    {filtered?.map((item: any) => (
+                    {filtered?.reverse().map((item: any) => (
                         <li className="text-red-500" key={item?.id}>
                         <Link
                           to={`/series/${item.slug}`}
