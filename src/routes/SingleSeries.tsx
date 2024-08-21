@@ -1,6 +1,8 @@
+import { DiscussionEmbed } from 'disqus-react';
 import NotFound from "@/components/NotFound";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/providers/AuthProvider";
 import { createBookmark, deleteBookmark } from "@/services/bookmarkService";
 import { getSerie } from "@/services/serieService";
 import {
@@ -15,6 +17,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 const SingleSeries = () => {
+  const { user } = useAuth()
   const { slug } = useParams();
   const queryClient = useQueryClient()
   const [bookmarked, setBookmarked] = useState(false)
@@ -120,11 +123,14 @@ const SingleSeries = () => {
                 "bg-[#6cc174] hover:bg-[#6cc174]": bookmarked,
                 "cursor-not-allowed": bookmarkPending
               }
-            )} onClick={handleBookmark} disabled={bookmarkPending}>
-              <FontAwesomeIcon icon={faHeart} />
-              Bookmark
+            )} onClick={handleBookmark} disabled={bookmarkPending || !user}>
+              {user ? (
+                <>
+                  <FontAwesomeIcon icon={faHeart} />
+                  {bookmarked ? "Bookmarked" : "Bookmark"}
+                </>
+              ) : "Login to Bookmark"}
             </Button>
-            {/* <BookmarkButton serieId={data?.id} /> */}
             <div className="flex justify-center text-[#9ca9b9] text-sm">
               <p>{data?.bookmarks?.count} Users Bookmarked</p>
             </div>
@@ -215,15 +221,15 @@ const SingleSeries = () => {
                 />{" "}
                 Comments
               </h2>
-              {/* <DiscussionEmbed
+              <DiscussionEmbed
                 shortname="komikgan-1"
                 config={{
-                  url: `https://eeae-104-28-251-244.ngrok-free.app/series/${data?.slug}`,
+                  url: new URL(`/series/${data?.slug}`, import.meta.env.VITE_APP_URL).href,
                   identifier: data?.slug,
                   title: data?.title,
                   language: "id_ID"
                 }}
-              /> */}
+              />
             </div>
           </div>
         </div>

@@ -51,8 +51,9 @@ const Header = () => {
   });
 
   const handleSearch = (str: string) => {
-    if (str.length < 1) return;
-    navigate(`/search/${str}`);
+    if (str.length > 0) {
+      navigate(`/search/${str}`);
+    }
   };
 
   return (

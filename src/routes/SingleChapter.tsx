@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
+import { DiscussionEmbed } from "disqus-react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -168,15 +169,15 @@ const SingleChapter = () => {
           <FontAwesomeIcon icon={faMessage} fill="#6e6dfb" color="#6e6dfb" />{" "}
           Comments
         </h2>
-        {/* <DiscussionEmbed
+        <DiscussionEmbed
           shortname="komikgan-1"
           config={{
-            url: `https://eeae-104-28-251-244.ngrok-free.app/series/${chapter?.slug}`,
+            url: new URL(`/${chapter?.slug}`, import.meta.env.VITE_APP_URL).href,
             identifier: chapter?.slug,
             title: chapter?.title,
             language: "id_ID",
           }}
-        /> */}
+        />
       </div>
 
       <div
