@@ -24,7 +24,7 @@ const registerUser = async ({
   email: string;
   password: string;
 }) => {
-  const response = await fetch("http://localhost:3001/users/register", {
+  const response = await fetch(new URL("/users/register", import.meta.env.VITE_API_URL).href, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

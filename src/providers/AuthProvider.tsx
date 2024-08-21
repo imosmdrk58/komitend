@@ -31,7 +31,7 @@ const AuthContext = createContext<{
 });
 
 async function getUserProfile() {
-  const res = await fetch("http://localhost:3001/users/me", {
+  const res = await fetch(new URL("/users/me", import.meta.env.VITE_API_URL).href, {
     method: "GET",
     credentials: "include"
   })
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const refreshAccessToken = async () => {
       if (data) {
-        const response = await fetch("http://localhost:3001/authentications", {
+        const response = await fetch(new URL("/authentications", import.meta.env.VITE_API_URL).href, {
           method: "PUT",
           credentials: "include"
         })
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   })
 
   const login = async ({ email, password }: { email: string, password: string }) => {
-    const response = await fetch("http://localhost:3001/authentications", {
+    const response = await fetch(new URL("/authentications", import.meta.env.VITE_API_URL).href, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
-    await fetch("http://localhost:3001/authentications", {
+    await fetch(new URL("/authentications", import.meta.env.VITE_API_URL).href, {
       method: "DELETE",
       credentials: "include"
     })

@@ -52,7 +52,7 @@ const updateUserProfile = async (value: {
   email?: string;
   password?: string;
 }) => {
-  const res = await fetch("http://localhost:3001/users/me", {
+  const res = await fetch(new URL("/users/me", import.meta.env.VITE_API_URL).href, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
