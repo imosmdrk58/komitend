@@ -27,7 +27,7 @@ const Profile = () => {
             </h1>
             <div className="bg-[#ffffff] dark:bg-[#3b3c4c] px-6 py-2 rounded-md flex items-center justify-center gap-2 font-semibold">
               <FontAwesomeIcon icon={faHeart} color="#f27474" />
-              123 Series Favorited
+              {user?.bookmarks?.count} Series Favorited
             </div>
           </div>
         </div>

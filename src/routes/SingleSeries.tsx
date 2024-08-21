@@ -1,5 +1,7 @@
 import NotFound from "@/components/NotFound";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { createBookmark, deleteBookmark } from "@/services/bookmarkService";
 import { getSerie } from "@/services/serieService";
 import {
   faBookOpen,
@@ -8,11 +10,15 @@ import {
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 const SingleSeries = () => {
   const { slug } = useParams();
+  const queryClient = useQueryClient()
+  const [bookmarked, setBookmarked] = useState(false)
+  const [bookmarkPending, setBookmarkPending] = useState(true)
 
   const { data, isPending } = useQuery({
     queryKey: ["series", { slug }],
@@ -20,8 +26,58 @@ const SingleSeries = () => {
     retry: false,
     staleTime: Infinity,
   });
+  
+  const createBookmarkMutation = useMutation({
+    mutationKey: ["create-bookmark"],
+    mutationFn: createBookmark,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["series", { slug }] })
+      queryClient.invalidateQueries({ queryKey: ["bookmarks"] })
+      queryClient.invalidateQueries({ queryKey: ["profile"] })
+      setBookmarked(true)
+    },
+    onMutate: () => {
+      setBookmarkPending(true)
+    },
+    onSettled: () => {
+      setBookmarkPending(false)
+    }
+  })
+
+  const deleteBookmarkMutation = useMutation({
+    mutationKey: ["delete-bookmark"],
+    mutationFn: deleteBookmark,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["series", { slug }] })
+      queryClient.invalidateQueries({ queryKey: ["bookmarks"] })
+      queryClient.invalidateQueries({ queryKey: ["profile"] })
+      setBookmarked(false)
+    },
+    onMutate: () => {
+      setBookmarkPending(true)
+    },
+    onSettled: () => {
+      setBookmarkPending(false)
+    }
+  })
+
+  useEffect(() => {
+    if (data?.bookmarks.isBookmarked) {
+      setBookmarked(true)
+    }
+
+    setBookmarkPending(false)
+  }, [data?.bookmarks])
 
   if (!isPending && !data) return <NotFound />
+
+  const handleBookmark = async () => {
+    if (bookmarked) {
+      deleteBookmarkMutation.mutate(data?.id)
+    } else {
+      createBookmarkMutation.mutate(data?.id)
+    }
+  }
 
   return (
     <main className="min-h-[68vh] mb-10">
@@ -57,13 +113,20 @@ const SingleSeries = () => {
               <FontAwesomeIcon icon={faStar} fill="#ffdd73" color="#ffdd73" />
               {data?.rating}
             </div>
-            <Button className="rounded-full flex items-center justify-center py-2 font-semibold text-md gap-2 bg-[#c15656] hover:bg-[#ff5a5a] text-white">
+            <Button className={cn(
+              "rounded-full flex items-center justify-center py-2 font-semibold text-md gap-2 text-white",
+              {
+                "bg-[#c15656] hover:bg-[#ff5a5a]": !bookmarked,
+                "bg-[#6cc174] hover:bg-[#6cc174]": bookmarked,
+                "cursor-not-allowed": bookmarkPending
+              }
+            )} onClick={handleBookmark} disabled={bookmarkPending}>
               <FontAwesomeIcon icon={faHeart} />
               Bookmark
             </Button>
             {/* <BookmarkButton serieId={data?.id} /> */}
             <div className="flex justify-center text-[#9ca9b9] text-sm">
-              <p>0 Users Bookmarked</p>
+              <p>{data?.bookmarks?.count} Users Bookmarked</p>
             </div>
             <ul className="bg-[#3b3c4c] text-[#9ca9b9] p-5 rounded-md flex flex-col gap-2">
               <li className="flex flex-col gap-2">

@@ -30,6 +30,7 @@ import MangaList from "./routes/MangaList";
 import GenreList from "./routes/GenreList";
 import SeriesByGenre from "./routes/SeriesByGenre";
 import SearchSeries from "./routes/SearchSeries";
+import Bookmarks from "./routes/Bookmarks";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: "/genres/:slug",
         element: <SeriesByGenre />
+      },
+      {
+        path: "/bookmarks",
+        element: <Bookmarks />,
       },
       {
         path: "/register",

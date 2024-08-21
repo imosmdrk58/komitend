@@ -7,6 +7,9 @@ type User = {
   email: string;
   image: string | null;
   role: string;
+  bookmarks: {
+    count: number
+  }
 };
 
 const AuthContext = createContext<{

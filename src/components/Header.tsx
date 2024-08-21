@@ -28,7 +28,7 @@ const routes = [
     label: "Genre List",
   },
   {
-    url: "#",
+    url: "/bookmarks",
     label: "Bookmarks",
   },
 ];
