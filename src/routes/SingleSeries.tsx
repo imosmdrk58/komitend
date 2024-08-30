@@ -166,7 +166,7 @@ const SingleSeries = () => {
             </ul>
           </div>
         </div>
-        <div className="md:mt-8">
+        <div className="md:mt-8 w-full">
           <h1 className="hidden md:block text-2xl font-semibold mb-6">
             {data?.title}
           </h1>
