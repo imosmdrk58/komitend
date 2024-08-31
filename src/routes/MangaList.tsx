@@ -22,7 +22,7 @@ const MangaList = () => {
           <Link
             key={letter}
             to={`#${letter}`}
-            className="px-3 py-2 text-[#9ca9b9] hover:bg-[#6e6dfb] hover:text-white rounded-md transition-colors"
+            className="px-3 py-2 text-[#444444] dark:text-[#9ca9b9] hover:bg-[#6e6dfb] hover:text-white rounded-md transition-colors"
           >
             <li>{letter}</li>
           </Link>
@@ -39,11 +39,11 @@ const MangaList = () => {
 
             return (
                 <li
-                  className="flex gap-10 pb-4 border-b-2 border-dashed border-[#45475a]"
+                  className="flex gap-10 pb-4 border-b-2 border-dashed dark:border-[#45475a]"
                   key={letter}
                   id={letter}
                 >
-                  <div className="text-xl flex justify-center items-center bg-[#45475a] text-white rounded-md w-12 h-12">
+                  <div className="text-xl flex justify-center items-center bg-gray-200 dark:bg-[#45475a] dark:text-white rounded-md w-12 h-12">
                     {letter}
                   </div>
                   <ul className="list-[square]">
@@ -51,7 +51,7 @@ const MangaList = () => {
                         <li className="text-red-500" key={item?.id}>
                         <Link
                           to={`/series/${item.slug}`}
-                          className="text-[#9ca9b9] hover:text-white transition-colors"
+                          className="text-[#666666] hover:text-black dark:text-[#9ca9b9] dark:hover:text-white transition-colors"
                         >
                           {item?.title}
                         </Link>
