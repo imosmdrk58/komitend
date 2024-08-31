@@ -53,7 +53,7 @@ const SingleChapter = () => {
         {chapter?.title}
       </h1>
 
-      <div className="p-3 flex items-center justify-between gap-4 bg-[#343543] text-[#9ca9b9] rounded-md">
+      <div className="p-3 flex items-center justify-between gap-4 bg-gray-200 dark:bg-[#343543] dark:text-[#9ca9b9] rounded-md">
         <div className="flex gap-4 items-center">
           <img
             alt=""
@@ -73,7 +73,7 @@ const SingleChapter = () => {
         </div>
         <div className="flex pl-4 gap-2">
           <button
-            className="bg-[#2f303e] text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer"
+            className="bg-gray-300 dark:bg-[#2f303e] dark:text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer"
             onClick={() => setOpen(!open)}
           >
             <FontAwesomeIcon icon={faList} />
@@ -81,7 +81,7 @@ const SingleChapter = () => {
           <Link
             to={prev ? `/${prev.slug}` : "#"}
             className={cn(
-              "bg-[#45475a] text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
+              "bg-gray-300 dark:bg-[#45475a] dark:text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
               !prev && "cursor-not-allowed opacity-25 hover:none",
               prev && "hover:bg-[#6e6dfb] hover:text-white"
             )}
@@ -91,7 +91,7 @@ const SingleChapter = () => {
           <Link
             to={next ? `/${next.slug}` : "#"}
             className={cn(
-              "bg-[#45475a] text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
+              "bg-gray-300 dark:bg-[#45475a] dark:text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
               !next && "cursor-not-allowed opacity-25 hover:none",
               next && "hover:bg-[#6e6dfb] hover:text-white"
             )}
@@ -116,7 +116,7 @@ const SingleChapter = () => {
         </div>
       </div>
 
-      <div className="p-3 flex items-center justify-between gap-4 bg-[#343543] text-[#9ca9b9] rounded-md">
+      <div className="p-3 flex items-center justify-between gap-4 bg-gray-200 dark:bg-[#343543] dark:text-[#9ca9b9] rounded-md">
         <div className="flex gap-4 items-center">
           <img
             alt=""
@@ -136,7 +136,7 @@ const SingleChapter = () => {
         </div>
         <div className="flex pl-4 gap-2">
           <button
-            className="bg-[#2f303e] text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer"
+            className="bg-gray-300 dark:bg-[#2f303e] dark:text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer"
             onClick={() => setOpen(!open)}
           >
             <FontAwesomeIcon icon={faList} />
@@ -144,7 +144,7 @@ const SingleChapter = () => {
           <Link
             to={prev ? `/${prev.slug}` : "#"}
             className={cn(
-              "bg-[#45475a] text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
+              "bg-gray-300 dark:bg-[#45475a] dark:text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
               !prev && "cursor-not-allowed opacity-25 hover:none",
               prev && "hover:bg-[#6e6dfb] hover:text-white"
             )}
@@ -154,7 +154,7 @@ const SingleChapter = () => {
           <Link
             to={next ? `/${next.slug}` : "#"}
             className={cn(
-              "bg-[#45475a] text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
+              "bg-gray-300 dark:bg-[#45475a] dark:text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
               !next && "cursor-not-allowed opacity-25 hover:none",
               next && "hover:bg-[#6e6dfb] hover:text-white"
             )}
@@ -182,7 +182,7 @@ const SingleChapter = () => {
 
       <div
         className={cn(
-          "fixed left-0 top-0 h-screen w-72 bg-[#3b3c4c] z-20 shadow-xl shadow-gray-800 transition",
+          "fixed left-0 top-0 h-screen w-72 bg-white dark:bg-[#3b3c4c] z-20 shadow-xl shadow-gray-800 transition",
           { "-translate-x-full": !open }
         )}
       >
@@ -195,21 +195,21 @@ const SingleChapter = () => {
             <FontAwesomeIcon icon={faX} strokeWidth={6} />
           </button>
         </div>
-        <ul className="flex flex-col gap-1 h-[94%] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6e6dfb] scrollbar-track-[#3b3c4c] pr-1">
+        <ul className="flex flex-col gap-1 h-[94%] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6e6dfb] scrollbar-track-white dark:scrollbar-track-[#3b3c4c] pr-1">
           {serie?.chapters?.map((chapter: any) => (
             <Link to={`/${chapter.slug}`} key={chapter.id}>
               <li
                 className={cn(
-                  "bg-[#3b3c4c] flex gap-2 p-1 items-center py-2 border-dashed border-b-2 border-[#45475a] hover:text-[#6e6dfb]",
+                  "dark:bg-[#3b3c4c] flex gap-2 p-1 items-center py-2 border-dashed border-b-2 dark:border-[#45475a] hover:text-[#6e6dfb]",
                   "params.slug" === chapter.slug
                     ? "text-[#6e6dfb]"
                     : "text-[#9ca9b9]"
                 )}
               >
-                <div className="p-3 bg-[#48495b] rounded-lg">
-                  <FontAwesomeIcon icon={faBookOpen} color="#eeeeee" />
+                <div className="p-3 bg-gray-200 dark:bg-[#48495b] rounded-lg">
+                  <FontAwesomeIcon icon={faBookOpen} className="text-gray-600 dark:text-[#eeeeee]" />
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col text-[#444444] dark:text-[#9ca9b9]">
                   <p className="text-base">Chapter {chapter.chapter}</p>
                   <p className="text-xs">
                     {new Date(chapter.updatedAt).toLocaleDateString()}
