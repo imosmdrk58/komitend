@@ -175,7 +175,7 @@ const SingleSeries = () => {
                 <Link
                   key={genre.id}
                   to={`/genres/${genre.slug}`}
-                  className="py-2 px-4 bg-gray-200 dark:bg-[#3b3c4c] rounded-md hover:bg-[#6e6dfb] hover:text-white transition"
+                  className="py-2 px-4 bg-gray-200 dark:bg-[#3b3c4c] rounded-md hover:bg-[#6e6dfb] hover:text-white dark:hover:bg-[#6e6dfb] dark:hover:text-white transition"
                 >
                   {genre.name}
                 </Link>
@@ -190,7 +190,7 @@ const SingleSeries = () => {
               {data?.chapters?.length > 0 ? (
                 data?.chapters?.map((chapter: any) => (
                   <Link to={`/${chapter.slug}`} key={chapter.id}>
-                    <li className="bg-gray-200 dark:bg-[#3b3c4c] dark:text-[#9ca9b9] rounded-md flex gap-2 p-1 dark:hover:bg-[#6e6dfb] hover:bg-[#6e6dfb]  hover:text-white group">
+                    <li className="bg-gray-200 dark:bg-[#3b3c4c] dark:text-[#9ca9b9] rounded-md flex gap-2 p-1 dark:hover:bg-[#6e6dfb] dark:hover:text-white hover:bg-[#6e6dfb]  hover:text-white group">
                       <div className="p-3 bg-gray-300 dark:bg-[#48495b] rounded-lg group-hover:bg-[#605fe0]">
                         <FontAwesomeIcon
                           icon={faBookOpen}

@@ -40,6 +40,11 @@ type UpdateSerieArgs = {
   genres?: string[];
 };
 
+export async function getReccomendation() {
+  const url = new URL("/series/recommendation", import.meta.env.VITE_API_URL)
+  return await apiFetch(url)
+}
+
 export async function getAllSeries() {
   const url = new URL("/series/all", import.meta.env.VITE_API_URL);
   return await apiFetch(url);

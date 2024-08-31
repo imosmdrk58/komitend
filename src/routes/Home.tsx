@@ -1,11 +1,16 @@
 import Pagination from "@/components/custom/pagination";
 import { formatRelativeTime } from "@/lib/utils";
-import { getLatestUpdate } from "@/services/serieService";
+import { getLatestUpdate, getReccomendation } from "@/services/serieService";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useSearchParams } from "react-router-dom";
 
 const Home = () => {
   const [searchParams] = useSearchParams();
+  const { data: recommendation } = useQuery({
+    queryKey: ["series", { key: "recommendation" }],
+    queryFn: async () => await getReccomendation()
+  })
+
   const { data } = useQuery({
     queryKey: [
       "series",
@@ -23,7 +28,24 @@ const Home = () => {
 
   return (
     <main>
+      <div className="w-full bg-gray-100 dark:bg-[#343544]">
+        <div className="max-w-5xl m-auto flex flex-col gap-4 px-4 py-4 w-full">
+          <h2 className="text-2xl font-semibold text-left">
+            <span className="text-[#6e6dfb]">Popular</span> Manga
+          </h2>
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+            {recommendation?.map((serie: any) => (
+              <Link to={`/series/${serie?.slug}`} className="flex flex-col gap-2 hover:text-[#6e6dfb] hover:scale-105 duration-300 relative">
+                <img src={serie?.imageUrl}  className="rounded-lg shadow-lg object-cover md:h-52 h-48 w-full"/>
+                <h1 className="text-center font-semibold line-clamp-2">{serie?.title}</h1>
+                <div className="absolute top-0 left-0 bg-red-400 px-2 py-1 text-xs italic text-white rounded-tl-lg rounded-br-lg">{serie?.seriesType?.toUpperCase()}</div>
+            </Link>
+            ))}
+          </div>
+        </div>
+      </div>
       <div className="max-w-5xl m-auto flex flex-col gap-4 my-5 px-4 w-full">
+
         <div className="flex justify-between">
           <h2 className="w-full text-2xl font-semibold text-left">
             <span className="text-[#6e6dfb]">Latest</span> Update
@@ -59,7 +81,7 @@ const Home = () => {
                       <li className="flex justify-between" key={chapter.id}>
                         <Link
                           to={`/${chapter.slug}`}
-                          className="px-4 py-1 text-[15px] bg-gray-200 dark:text-[#eeeeee] dark:bg-[#3b3c4c] rounded-full hover:bg-[#6e6dfb] hover:text-[#ffffff] transition-colors"
+                          className="px-4 py-1 text-[15px] bg-gray-200 dark:text-[#eeeeee] dark:bg-[#3b3c4c] hover:bg-[#6e6dfb] hover:text-[#ffffff] dark:hover:bg-[#6e6dfb] dark:hover:text-[#ffffff] rounded-full transition-colors"
                         >
                           Chapter {chapter.chapter}
                         </Link>

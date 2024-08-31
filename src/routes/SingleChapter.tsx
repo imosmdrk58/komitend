@@ -60,7 +60,7 @@ const SingleChapter = () => {
             src={serie?.imageUrl || ""}
             width={100}
             height={100}
-            className="rounded-md w-16 h-16 border border-[#9ca9b9]"
+            className="rounded-md w-16 h-16 border"
           />
           <div className="flex flex-col">
             <span className="text-md font-semibold">{chapter?.title}</span>
@@ -73,7 +73,7 @@ const SingleChapter = () => {
         </div>
         <div className="flex pl-4 gap-2">
           <button
-            className="bg-gray-300 dark:bg-[#2f303e] dark:text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer"
+            className="bg-gray-300 dark:bg-[#2f303e] dark:text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer hover:bg-[#6e6dfb] hover:text-white dark:hover:bg-[#6e6dfb] dark:hover:text-white"
             onClick={() => setOpen(!open)}
           >
             <FontAwesomeIcon icon={faList} />
@@ -83,7 +83,7 @@ const SingleChapter = () => {
             className={cn(
               "bg-gray-300 dark:bg-[#45475a] dark:text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
               !prev && "cursor-not-allowed opacity-25 hover:none",
-              prev && "hover:bg-[#6e6dfb] hover:text-white"
+              prev && "hover:bg-[#6e6dfb] hover:text-white dark:hover:bg-[#6e6dfb] dark:hover:text-white"
             )}
           >
             <FontAwesomeIcon icon={faArrowLeft} />
@@ -93,7 +93,7 @@ const SingleChapter = () => {
             className={cn(
               "bg-gray-300 dark:bg-[#45475a] dark:text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
               !next && "cursor-not-allowed opacity-25 hover:none",
-              next && "hover:bg-[#6e6dfb] hover:text-white"
+              next && "hover:bg-[#6e6dfb] hover:text-white dark:hover:bg-[#6e6dfb] dark:hover:text-white"
             )}
           >
             <FontAwesomeIcon icon={faArrowRight} />
@@ -123,7 +123,7 @@ const SingleChapter = () => {
             src={serie?.imageUrl || ""}
             width={100}
             height={100}
-            className="rounded-md w-16 h-16 border border-[#9ca9b9]"
+            className="rounded-md w-16 h-16 border"
           />
           <div className="flex flex-col">
             <span className="text-md font-semibold">{chapter?.title}</span>
@@ -136,7 +136,7 @@ const SingleChapter = () => {
         </div>
         <div className="flex pl-4 gap-2">
           <button
-            className="bg-gray-300 dark:bg-[#2f303e] dark:text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer"
+            className="bg-gray-300 dark:bg-[#2f303e] dark:text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer hover:bg-[#6e6dfb] hover:text-white dark:hover:bg-[#6e6dfb] dark:hover:text-white"
             onClick={() => setOpen(!open)}
           >
             <FontAwesomeIcon icon={faList} />
@@ -146,7 +146,7 @@ const SingleChapter = () => {
             className={cn(
               "bg-gray-300 dark:bg-[#45475a] dark:text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
               !prev && "cursor-not-allowed opacity-25 hover:none",
-              prev && "hover:bg-[#6e6dfb] hover:text-white"
+              prev && "hover:bg-[#6e6dfb] hover:text-white dark:hover:bg-[#6e6dfb] dark:hover:text-white"
             )}
           >
             <FontAwesomeIcon icon={faArrowLeft} />
@@ -156,7 +156,7 @@ const SingleChapter = () => {
             className={cn(
               "bg-gray-300 dark:bg-[#45475a] dark:text-[#eeeeee] px-[10px] py-[5px] rounded-sm cursor-pointer",
               !next && "cursor-not-allowed opacity-25 hover:none",
-              next && "hover:bg-[#6e6dfb] hover:text-white"
+              next && "hover:bg-[#6e6dfb] hover:text-white dark:hover:bg-[#6e6dfb] dark:hover:text-white"
             )}
           >
             <FontAwesomeIcon icon={faArrowRight} />
@@ -200,16 +200,21 @@ const SingleChapter = () => {
             <Link to={`/${chapter.slug}`} key={chapter.id}>
               <li
                 className={cn(
-                  "dark:bg-[#3b3c4c] flex gap-2 p-1 items-center py-2 border-dashed border-b-2 dark:border-[#45475a] hover:text-[#6e6dfb]",
-                  "params.slug" === chapter.slug
-                    ? "text-[#6e6dfb]"
-                    : "text-[#9ca9b9]"
+                  "dark:bg-[#3b3c4c] flex gap-2 p-1 items-center py-2 border-dashed border-b-2 dark:border-[#45475a] hover:text-[#6e6dfb] dark:hover:text-[#6e6dfb] group",
+                  slug === chapter.slug
+                    ? "text-[#6e6dfb] dark:text-[#6e6dfb]"
+                    : "text-[#444444] dark:text-[#9ca9b9]"
                 )}
               >
-                <div className="p-3 bg-gray-200 dark:bg-[#48495b] rounded-lg">
-                  <FontAwesomeIcon icon={faBookOpen} className="text-gray-600 dark:text-[#eeeeee]" />
+                <div className={cn(
+                  "p-3 rounded-lg group-hover:bg-[#6e6dfb] group-hover:text-white",
+                  slug === chapter.slug
+                  ? "bg-[#6e6dfb] dark:bg-[#6e6dfb] text-white"
+                  : "bg-gray-200 dark:bg-[#48495b] text-gray-600 dark:text-[#eeeeee]"
+                )}>
+                  <FontAwesomeIcon icon={faBookOpen} className="" />
                 </div>
-                <div className="flex flex-col text-[#444444] dark:text-[#9ca9b9]">
+                <div className="flex flex-col">
                   <p className="text-base">Chapter {chapter.chapter}</p>
                   <p className="text-xs">
                     {new Date(chapter.updatedAt).toLocaleDateString()}
