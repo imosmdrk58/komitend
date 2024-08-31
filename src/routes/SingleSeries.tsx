@@ -84,12 +84,11 @@ const SingleSeries = () => {
 
   return (
     <main className="min-h-[68vh] mb-10">
-      <div className="w-full h-72 relative overflow-hidden">
-        <img
-          src={data?.imageUrl || ""}
-          className="blur-lg object-cover brightness-50 w-full h-full"
-          alt=""
-        />
+      <div className="bg-[#2f303e] relative overflow-hidden">
+        <div className="bg-cover bg-center h-72" style={{
+          backgroundImage: `url(${data?.imageUrl || ""})`,
+          filter: "blur(10px) brightness(0.5) contrast(1)",
+        }} />
       </div>
       <div className="relative max-w-5xl mx-auto flex gap-4 flex-col md:flex-row px-4 -mt-48 md:-mt-20">
         <div className="flex flex-col justify-center items-center md:justify-start md:items-start gap-4 min-w-[250px] md:w-[250px]">
@@ -100,7 +99,7 @@ const SingleSeries = () => {
             height={344}
             className="rounded-lg w-[250px] h-[344px] shadow-md"
           />
-          <h1 className="text-2xl font-bold text-center md:hidden">
+          <h1 className="text-2xl font-bold text-center md:hidden text-white dark:text-[#9ca9b9]">
             {data?.title}
           </h1>
           <div className="flex flex-col gap-2 w-full">
@@ -112,7 +111,7 @@ const SingleSeries = () => {
                 {data?.seriesStatus.toUpperCase()}
               </div>
             </div>
-            <div className="bg-[#38394a] text-[#9ca9b9] rounded-full flex items-center justify-center py-2 font-semibold text-md gap-2">
+            <div className="bg-gray-200 dark:bg-[#38394a] dark:text-[#9ca9b9] rounded-full flex items-center justify-center py-2 font-semibold text-md gap-2">
               <FontAwesomeIcon icon={faStar} fill="#ffdd73" color="#ffdd73" />
               {data?.rating}
             </div>
@@ -131,43 +130,43 @@ const SingleSeries = () => {
                 </>
               ) : "Login to Bookmark"}
             </Button>
-            <div className="flex justify-center text-[#9ca9b9] text-sm">
+            <div className="flex justify-center dark:text-[#9ca9b9] text-sm">
               <p>{data?.bookmarks?.count} Users Bookmarked</p>
             </div>
-            <ul className="bg-[#3b3c4c] text-[#9ca9b9] p-5 rounded-md flex flex-col gap-2">
+            <ul className="bg-gray-200 dark:bg-[#3b3c4c] dark:text-[#9ca9b9] p-5 rounded-md flex flex-col gap-2">
               <li className="flex flex-col gap-2">
-                <p className="text-sm font-semibold">Alternative</p>
-                <p className="text-xs">{data?.alternative}</p>
+                <p className="font-semibold">Alternative</p>
+                <p className="text-sm">{data?.alternative}</p>
               </li>
               <li className="flex flex-col gap-2">
-                <p className="text-sm font-semibold">Published</p>
-                <p className="text-xs">{data?.released}</p>
+                <p className="font-semibold">Published</p>
+                <p className="text-sm">{data?.released}</p>
               </li>
               <li className="flex flex-col gap-2">
-                <p className="text-sm font-semibold">Author</p>
-                <p className="text-xs">{data?.author}</p>
+                <p className="font-semibold">Author</p>
+                <p className="text-sm">{data?.author}</p>
               </li>
               <li className="flex flex-col gap-2">
-                <p className="text-sm font-semibold">Artist</p>
-                <p className="text-xs">{data?.artist}</p>
+                <p className="font-semibold">Artist</p>
+                <p className="text-sm">{data?.artist}</p>
               </li>
               <li className="flex flex-col gap-2">
-                <p className="text-sm font-semibold">Posted By</p>
-                <p className="text-xs">{data?.user?.username}</p>
+                <p className="font-semibold">Posted By</p>
+                <p className="text-sm">{data?.user?.username}</p>
               </li>
               <li className="flex flex-col gap-2">
-                <p className="text-sm font-semibold">Total Chapters</p>
-                <p className="text-xs">? Chapter</p>
+                <p className="font-semibold">Total Chapters</p>
+                <p className="text-sm">? Chapter</p>
               </li>
               <li className="flex flex-col gap-2">
-                <p className="text-sm font-semibold">Serialization</p>
-                <p className="text-xs">{data?.serialization}</p>
+                <p className="font-semibold">Serialization</p>
+                <p className="text-sm">{data?.serialization}</p>
               </li>
             </ul>
           </div>
         </div>
         <div className="md:mt-8 w-full">
-          <h1 className="hidden md:block text-2xl font-semibold mb-6">
+          <h1 className="hidden md:block text-2xl font-semibold mb-6 text-white dark:text-[#9ca9b9]">
             {data?.title}
           </h1>
           <div className="flex flex-wrap gap-2 py-3">
@@ -176,13 +175,13 @@ const SingleSeries = () => {
                 <Link
                   key={genre.id}
                   to={`/genres/${genre.slug}`}
-                  className="py-2 px-4 bg-[#3b3c4c] rounded-md hover:bg-[#6e6dfb] hover:text-white transition"
+                  className="py-2 px-4 bg-gray-200 dark:bg-[#3b3c4c] rounded-md hover:bg-[#6e6dfb] hover:text-white transition"
                 >
                   {genre.name}
                 </Link>
               ))}
           </div>
-          <p className="text-[#9ca9b9]">{data?.description}</p>
+          <p className="dark:text-[#9ca9b9]">{data?.description}</p>
           <div className="mt-4">
             <h2 className="mb-4 text-2xl font-semibold ">
               <span className="text-[#6e6dfb]">Chapter</span> List
@@ -191,11 +190,11 @@ const SingleSeries = () => {
               {data?.chapters?.length > 0 ? (
                 data?.chapters?.map((chapter: any) => (
                   <Link to={`/${chapter.slug}`} key={chapter.id}>
-                    <li className="bg-[#3b3c4c] text-[#9ca9b9] rounded-md flex gap-2 p-1 hover:bg-[#6e6dfb] hover:text-white group">
-                      <div className="p-3 bg-[#48495b] rounded-lg group-hover:bg-[#605fe0]">
+                    <li className="bg-gray-200 dark:bg-[#3b3c4c] dark:text-[#9ca9b9] rounded-md flex gap-2 p-1 dark:hover:bg-[#6e6dfb] hover:bg-[#6e6dfb]  hover:text-white group">
+                      <div className="p-3 bg-gray-300 dark:bg-[#48495b] rounded-lg group-hover:bg-[#605fe0]">
                         <FontAwesomeIcon
                           icon={faBookOpen}
-                          color="#eeeeee"
+                          className='dark:text-[#eeeeee]'
                           size="lg"
                         />
                       </div>

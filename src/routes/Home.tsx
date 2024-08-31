@@ -34,12 +34,12 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {data?.data?.map((serie: any) => (
               <div
-                className="pb-4 border-b-2 border-dashed border-[#45475a] flex w-full h-auto gap-2"
+                className="pb-4 border-b-2 border-dashed border-gray-300 dark:border-[#45475a] flex w-full h-auto gap-2"
                 key={serie.id}
               >
                 <Link
                   to={`/series/${serie.slug}`}
-                  className="w-24 h-36 border-2 rounded-md border-[#45475a] flex-none overflow-hidden relative"
+                  className="w-24 h-36 border-2 rounded-md border-gray-400 dark:border-[#45475a] flex-none overflow-hidden relative"
                 >
                   <img
                     src={serie.imageUrl}
@@ -59,7 +59,7 @@ const Home = () => {
                       <li className="flex justify-between" key={chapter.id}>
                         <Link
                           to={`/${chapter.slug}`}
-                          className="px-4 py-1 text-[15px] text-[#eeeeee] bg-[#3b3c4c] rounded-full hover:bg-[#6e6dfb] hover:text-[#ffffff] transition-colors"
+                          className="px-4 py-1 text-[15px] bg-gray-200 dark:text-[#eeeeee] dark:bg-[#3b3c4c] rounded-full hover:bg-[#6e6dfb] hover:text-[#ffffff] transition-colors"
                         >
                           Chapter {chapter.chapter}
                         </Link>
