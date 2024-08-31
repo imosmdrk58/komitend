@@ -17,6 +17,10 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Skeleton } from "./ui/skeleton";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormField } from "./ui/form";
 
 const routes = [
   {
@@ -33,7 +37,17 @@ const routes = [
   },
 ];
 
+const formSchema = z.object({
+  search: z.string()
+})
+
 const Header = () => {
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      search: ""
+    }
+  })
   const { theme, setTheme } = useTheme()
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -50,10 +64,10 @@ const Header = () => {
     },
   });
 
-  const handleSearch = (str: string) => {
-    if (str.length > 0) {
-      navigate(`/search/${str}`);
-    }
+  const handleSearch = (values: z.infer<typeof formSchema>) => {
+    if (values.search.length > 0) {
+      navigate("/search/"+values.search)
+    } 
   };
 
   return (
@@ -107,20 +121,16 @@ const Header = () => {
               />
             </button>
             <div className="hidden md:flex h-full items-center mr-2">
-              <input
-                type="text"
-                name="search"
-                className="py-2 px-4 rounded-sm outline-none text-sm font-semibold focus:ring-1 ring-[#777777] bg-[#f1f1f1] text-[#444444] placeholder:text-[#777777] dark:bg-[#2f303e] dark:text-[#aaaaaa] dark:placeholder:text-[#aaaaaa] dark:ring-[#45475a]"
-                placeholder="Search..."
-                autoComplete="off"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleSearch(e.currentTarget.value);
-                  }
-                }}
-              />
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(handleSearch)}>
+                  <FormField
+                    name="search"
+                    render={({ field }) => (
+                      <input className="py-2 px-4 rounded-sm outline-none text-sm font-semibold focus:ring-1 ring-[#777777] bg-[#f1f1f1] text-[#444444] placeholder:text-[#777777] dark:bg-[#2f303e] dark:text-[#aaaaaa] dark:placeholder:text-[#aaaaaa] dark:ring-[#45475a]" placeholder="Search..." autoComplete="off" {...field}/>
+                    )}
+                  />
+                </form>
+              </Form>
             </div>
             <div className="h-full px-[12px] cursor-pointer flex items-center relative lg:pr-0 bg-[#ffffff] dark:bg-[#3b3c4c] text-[#444444] dark:text-[#eeeeee]">
               {!pending ? (
@@ -250,20 +260,22 @@ const Header = () => {
       </div>
 
       {/* mobile search */}
-      <div
-        className={
-          "w-full p-[10px] flex flex-col gap-2 border-t-4 border-[#3453d1] transition-transform md:hidden z-10 absolute bg-[#ffffff] text-[#444444] dark:bg-[#45475a] dark:text-[#9ca9b9]" +
-          (isSearchOpen ? "" : " -translate-y-[100%]")
-        }
-      >
-        <input
-          type="text"
-          name="search"
-          className="py-2 px-4 rounded-sm outline-none text-sm w-full font-semibold focus:ring-1 ring-[#777777] bg-[#f1f1f1] text-[#444444] placeholder:text-[#777777] dark:bg-[#2f303e] dark:text-[#aaaaaa] dark:placeholder:text-[#aaaaaa] dark:ring-[#45475a]"
-          placeholder="Search..."
-          autoComplete="off"
-        />
-      </div>
+      <Form {...form}>
+        <form
+          className={
+            "w-full p-[10px] flex flex-col gap-2 border-t-4 border-[#3453d1] transition-transform md:hidden z-10 absolute bg-[#ffffff] text-[#444444] dark:bg-[#45475a] dark:text-[#9ca9b9]" + (isSearchOpen ? "" : " -translate-y-[100%]")
+          }
+          onSubmit={form.handleSubmit(handleSearch)}
+        >
+          <FormField
+            name="search"
+            render={({ field }) => (
+              <input className="py-2 px-4 rounded-sm outline-none text-sm w-full font-semibold focus:ring-1 ring-[#777777] bg-[#f1f1f1] text-[#444444] placeholder:text-[#777777] dark:bg-[#2f303e] dark:text-[#aaaaaa] dark:placeholder:text-[#aaaaaa] dark:ring-[#45475a]"
+              placeholder="Search..." autoComplete="off" {...field} />
+            )}
+          />
+        </form>
+      </Form>
     </header>
   );
 };
