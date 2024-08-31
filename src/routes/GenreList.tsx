@@ -20,7 +20,7 @@ const GenreList = () => {
           <li key={genre?.id}>
             <Link
               to={`/genres/${genre?.slug}`}
-              className="flex justify-between items-center p-3 text-[#9ca9b9] bg-[#3b3c4c] hover:text-white hover:bg-[#6e6dfb] transition-colors rounded-md"
+              className="flex justify-between items-center p-3 bg-gray-200 dark:text-[#9ca9b9] dark:bg-[#3b3c4c] hover:text-white hover:bg-[#6e6dfb] transition-colors rounded-md"
             >
               <span>{genre?.name}</span>
               <span>{genre?.count}</span>
