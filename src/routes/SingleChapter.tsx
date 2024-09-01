@@ -196,8 +196,8 @@ const SingleChapter = () => {
           </button>
         </div>
         <ul className="flex flex-col gap-1 h-[94%] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6e6dfb] scrollbar-track-white dark:scrollbar-track-[#3b3c4c] pr-1">
-          {serie?.chapters?.map((chapter: any) => (
-            <Link to={`/${chapter.slug}`} key={chapter.id}>
+          {serie?.chapters?.sort((a: any, b: any) => b.id - a.id)?.map((chapter: any) => (
+            <Link to={`/${chapter.slug}`} key={chapter.id} onClick={() => setOpen(false)}>
               <li
                 className={cn(
                   "dark:bg-[#3b3c4c] flex gap-2 p-1 items-center py-2 border-dashed border-b-2 dark:border-[#45475a] hover:text-[#6e6dfb] dark:hover:text-[#6e6dfb] group",

@@ -99,7 +99,7 @@ const SingleSeries = () => {
             height={344}
             className="rounded-lg w-[250px] h-[344px] shadow-md"
           />
-          <h1 className="text-2xl font-bold text-center md:hidden text-white dark:text-[#9ca9b9]">
+          <h1 className="text-2xl font-bold text-center md:hidden text-[#444444] dark:text-[#9ca9b9]">
             {data?.title}
           </h1>
           <div className="flex flex-col gap-2 w-full">
@@ -188,7 +188,7 @@ const SingleSeries = () => {
             </h2>
             <ul className="flex flex-col max-h-[596px] gap-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[#6e6dfb] scrollbar-track-[#3b3c4c] pr-1">
               {data?.chapters?.length > 0 ? (
-                data?.chapters?.map((chapter: any) => (
+                data?.chapters?.sort((a: any,b: any ) => b.id - a.id).map((chapter: any) => (
                   <Link to={`/${chapter.slug}`} key={chapter.id}>
                     <li className="bg-gray-200 dark:bg-[#3b3c4c] dark:text-[#9ca9b9] rounded-md flex gap-2 p-1 dark:hover:bg-[#6e6dfb] dark:hover:text-white hover:bg-[#6e6dfb]  hover:text-white group">
                       <div className="p-3 bg-gray-300 dark:bg-[#48495b] rounded-lg group-hover:bg-[#605fe0]">

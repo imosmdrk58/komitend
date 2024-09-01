@@ -60,6 +60,7 @@ const Header = () => {
     mutationKey: ["logout"],
     mutationFn: logout,
     onSuccess: () => {
+      setIsUserMenuOpen(false)
       navigate(0);
     },
   });
@@ -67,6 +68,7 @@ const Header = () => {
   const handleSearch = (values: z.infer<typeof formSchema>) => {
     if (values.search.length > 0) {
       navigate("/search/"+values.search)
+      setIsSearchOpen(false)
     } 
   };
 
@@ -155,7 +157,10 @@ const Header = () => {
                     <li className="m-[7px]">
                       <button
                         className="text-left w-28 flex items-center px-[10px] py-[7px] rounded-md text-[13px] font-semibold tracking-wide hover:bg-[#f1f1f1] dark:hover:bg-[#45475a]"
-                        onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+                        onClick={() => {
+                          setTheme(theme === "light" ? "dark" : "light")
+                          setIsUserMenuOpen(false)
+                        }}
                       >
                         <FontAwesomeIcon
                           icon={theme === "light" ? faMoon : faSun }
@@ -170,6 +175,7 @@ const Header = () => {
                           <Link
                             to="/login"
                             className="text-left w-28 flex items-center px-[10px] py-[7px] rounded-md text-[13px] font-semibold tracking-wide hover:bg-[#f1f1f1] dark:hover:bg-[#45475a]"
+                            onClick={() => setIsUserMenuOpen(false)}
                           >
                             <FontAwesomeIcon
                               icon={faArrowRightToBracket}
@@ -182,6 +188,7 @@ const Header = () => {
                           <Link
                             to="/register"
                             className="text-left w-28 flex items-center px-[10px] py-[7px] rounded-md text-[13px] font-semibold tracking-wide hover:bg-[#f1f1f1] dark:hover:bg-[#45475a]"
+                            onClick={() => setIsUserMenuOpen(false)}
                           >
                             <FontAwesomeIcon
                               icon={faUserPlus}
@@ -214,6 +221,7 @@ const Header = () => {
                           <Link
                             to="/profile"
                             className="text-left w-28 flex items-center px-[10px] py-[7px] rounded-md text-[13px] font-semibold tracking-wide hover:bg-[#f1f1f1] dark:hover:bg-[#45475a]"
+                            onClick={() => setIsUserMenuOpen(false)}
                           >
                             <FontAwesomeIcon icon={faUser} className="mr-3" />
                             Profile
@@ -221,7 +229,9 @@ const Header = () => {
                         </li>
                         <li className="m-[7px]">
                           <button
-                            onClick={() => logoutMutation.mutate()}
+                            onClick={() => {
+                              logoutMutation.mutate()
+                            }}
                             className="text-left w-28 flex items-center px-[10px] py-[7px] rounded-md text-[13px] font-semibold tracking-wide hover:bg-[#f1f1f1] dark:hover:bg-[#45475a]"
                           >
                             <FontAwesomeIcon
@@ -253,6 +263,7 @@ const Header = () => {
             to={route.url}
             key={route.label}
             className="mx-[10px] px-[15px] py-[8px] rounded-md font-semibold text-[16px] tracking-wide transition-colors hover:bg-[#3453d1] hover:text-[#ffffff] dark:hover:bg-[#3453d1] dark:hover:text-[#ffffff] bg-[#f1f1f1] text-[#444444] dark:bg-[#45475a] dark:text-[#9ca9b9]"
+            onClick={() => setIsMenuOpen(false)}
           >
             {route.label}
           </NavLink>
