@@ -32,7 +32,7 @@ const Footer = () => {
       </section>
 
       <span className="font-semibold text-[#444444] dark:text-[#999999] text-sm">
-        © Copyright 2024 - Alice Scans. All rights reserved.
+        © Copyright 2025 - Alice Scans. All rights reserved.
       </span>
     </footer>
   );
