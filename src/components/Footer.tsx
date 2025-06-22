@@ -3,10 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
 const routes = [
-    {
-        url: "",
-        icon: fa
-    },
+
     {
         url: "https://discord.gg/peEgP4MVBt",
         icon: faDiscord
