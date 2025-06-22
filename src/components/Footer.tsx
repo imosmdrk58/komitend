@@ -21,7 +21,7 @@ const Footer = () => {
           <Link to="/" className="flex gap-2 items-center text-[#444444] dark:text-[#9ca9b9]">
             <FontAwesomeIcon icon={faReact} className="size-6" />
             <h1 className="text-2xl font-extrabold">
-              KomikGan
+              Alice Scans
             </h1>
           </Link>
           <div className="flex gap-2">
