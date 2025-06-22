@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 
 const routes = [
     {
-        url: "https://github.com/rizkiromadoni",
-        icon: faGithub
+        url: "",
+        icon: fa
     },
     {
-        url: "#",
+        url: "https://discord.gg/peEgP4MVBt",
         icon: faDiscord
     },
 ]
