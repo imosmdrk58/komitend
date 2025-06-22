@@ -25,11 +25,11 @@ import { Form, FormField } from "./ui/form";
 const routes = [
   {
     url: "/series",
-    label: "Manga List",
+    label: "Manga Listesi",
   },
   {
     url: "/genres",
-    label: "Genre List",
+    label: "Tür Listesi",
   },
   {
     url: "/bookmarks",
@@ -92,7 +92,7 @@ const Header = () => {
                 className="text-[#3453d1] size-6"
               />
               <h1 className="text-2xl text-[#444444] dark:text-[#eeeeee] font-extrabold hover:text-[#3453d1] transition-colors duration-500">
-                KomikGan
+                Alice Scans
               </h1>
             </Link>
             <ul className="hidden md:flex gap-2 ml-5">
@@ -181,7 +181,7 @@ const Header = () => {
                               icon={faArrowRightToBracket}
                               className="mr-3"
                             />
-                            Login
+                            Giriş
                           </Link>
                         </li>
                         <li className="m-[7px]">
@@ -194,7 +194,7 @@ const Header = () => {
                               icon={faUserPlus}
                               className="mr-2"
                             />
-                            Register
+                            Kayit
                           </Link>
                         </li>
                       </>
@@ -224,7 +224,7 @@ const Header = () => {
                             onClick={() => setIsUserMenuOpen(false)}
                           >
                             <FontAwesomeIcon icon={faUser} className="mr-3" />
-                            Profile
+                            Profil
                           </Link>
                         </li>
                         <li className="m-[7px]">
@@ -238,7 +238,7 @@ const Header = () => {
                               icon={faArrowRightFromBracket}
                               className="mr-3"
                             />
-                            Logout
+                            Çıkış 
                           </button>
                         </li>
                       </>
