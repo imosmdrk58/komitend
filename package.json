@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
   "dev": "vite",
-  "start": "node index.ts",   // Eğer doğrudan ts dosyası çalıştırılmıyorsa bu satır opsiyonel
+  "start": "node index.ts", 
   "build": "vite build",
   "preview": "vite preview"
   },
