@@ -25,9 +25,9 @@ const Register = () => {
         <RegisterForm />
 
         <div className="w-full flex justify-center gap-1">
-          <span>Already Registered?</span>
+          <span>zaten hesabım var?</span>
           <Link to="/login" className="font-bold">
-            Login
+            Giriş
           </Link>
         </div>
       </div>
